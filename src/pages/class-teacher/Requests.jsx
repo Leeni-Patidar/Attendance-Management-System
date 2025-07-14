@@ -17,6 +17,7 @@ const Requests = () => {
           id: 1,
           studentName: "John Doe",
           rollNumber: "CS21B004",
+          studentEmail: "john.doe@example.com", // Added for mailto functionality
           type: "attendance_correction",
           subject: "Database Systems",
           reason: "Medical leave with certificate",
@@ -30,6 +31,7 @@ const Requests = () => {
           id: 2,
           studentName: "Jane Smith",
           rollNumber: "CS21B005",
+          studentEmail: "jane.smith@example.com", // Added for mailto functionality
           type: "subject_change",
           subject: "Elective Course Change",
           reason: "Want to change from AI to ML",
@@ -43,6 +45,7 @@ const Requests = () => {
           id: 3,
           studentName: "Mike Wilson",
           rollNumber: "CS21B006",
+          studentEmail: "mike.wilson@example.com", // Added for mailto functionality
           type: "personal_details",
           subject: "Contact Information Update",
           reason: "Phone number change",
@@ -57,6 +60,7 @@ const Requests = () => {
           id: 4,
           studentName: "Sarah Brown",
           rollNumber: "CS21B007",
+          studentEmail: "sarah.brown@example.com", // Added for mailto functionality
           type: "attendance_correction",
           subject: "Software Engineering",
           reason: "Family emergency",
@@ -87,6 +91,14 @@ const Requests = () => {
       ),
     )
     alert(`Request ${action} successfully!`)
+  }
+
+  const handleContactStudent = (studentEmail) => {
+    const teacherEmail = "your.email@example.com" // Replace with actual teacher's email or get from auth context
+    const subject = "Regarding your recent request"
+    const body = `Dear student, \n\nRegarding your request, \n\nBest regards,\nClass Teacher`
+    const mailtoLink = `mailto:${studentEmail}?cc=${teacherEmail}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    window.location.href = mailtoLink
   }
 
   const getStatusColor = (status) => {
@@ -150,7 +162,8 @@ const Requests = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Filters */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+
             <h3 className="text-lg font-semibold text-gray-900">Filter Requests</h3>
             <div className="flex gap-2">
               {["all", "pending", "approved", "rejected"].map((status) => (
@@ -182,7 +195,8 @@ const Requests = () => {
           ) : (
             filteredRequests.map((request) => (
               <div key={request.id} className="bg-white rounded-lg shadow-md p-6">
-                <div className="flex items-start justify-between mb-4">
+               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
+
                   <div className="flex items-start gap-4">
                     <div className="text-2xl">{getTypeIcon(request.type)}</div>
                     <div>
@@ -259,7 +273,8 @@ const Requests = () => {
                 </div>
 
                 {request.status === "pending" && (
-                  <div className="mt-6 flex gap-3">
+                  <div className="mt-6 flex flex-col sm:flex-row gap-3">
+
                     <button
                       onClick={() => {
                         const notes = prompt("Enter review notes (optional):")
@@ -280,7 +295,10 @@ const Requests = () => {
                     >
                       ✗ Reject
                     </button>
-                    <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center gap-2">
+                    <button
+                      onClick={() => handleContactStudent(request.studentEmail)}
+                      className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center gap-2"
+                    >
                       💬 Contact Student
                     </button>
                   </div>

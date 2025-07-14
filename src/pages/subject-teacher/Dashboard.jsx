@@ -253,7 +253,7 @@ const SubjectTeacherDashboard = () => {
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">Recent Activity</h3>
                 <button
-                  onClick={() => navigate("/subject-teacher/recent-activity")}
+                  onClick={() => navigate("/subject-teacher/RecentActivity")}
                   className="text-sm text-blue-600 hover:text-blue-800"
                 >
                   View All →
@@ -284,12 +284,12 @@ const SubjectTeacherDashboard = () => {
                 >
                   👥 Manage Students
                 </button>
-                <button
+                {/* <button
                   onClick={() => navigate("/subject-teacher/ViewReports")}
                   className="w-full text-left px-3 py-2 text-sm bg-blue-50 text-blue-700 rounded hover:bg-blue-100"
                 >
                   📊 View Reports
-                </button>
+                </button> */}
                 <button
                   onClick={() => navigate("/subject-teacher/ViewSchedule")}
                   className="w-full text-left px-3 py-2 text-sm bg-purple-50 text-purple-700 rounded hover:bg-purple-100"
@@ -302,12 +302,12 @@ const SubjectTeacherDashboard = () => {
                 >
                   📱 QR History
                 </button>
-                <button
+                {/* <button
                   onClick={() => navigate("/subject-teacher/profile")}
                   className="w-full text-left px-3 py-2 text-sm bg-indigo-50 text-indigo-700 rounded hover:bg-indigo-100"
                 >
                   👤 Profile Settings
-                </button>
+                </button> */}
                 <button
                   onClick={() => navigate("/subject-teacher/AttendanceAnalytics")}
                   className="w-full text-left px-3 py-2 text-sm bg-pink-50 text-pink-700 rounded hover:bg-pink-100"

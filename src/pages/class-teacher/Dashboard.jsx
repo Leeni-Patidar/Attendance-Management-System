@@ -12,6 +12,7 @@ const ClassTeacherDashboard = () => {
   const [subjects, setSubjects] = useState([])
   const [pendingRequests, setPendingRequests] = useState([])
   const [loading, setLoading] = useState(true)
+  const [searchTerm, setSearchTerm] = useState("")
 
   useEffect(() => {
     // Mock data for class teacher dashboard
@@ -55,8 +56,8 @@ const ClassTeacherDashboard = () => {
             CS303: { present: 35, absent: 15, percentage: 70 },
             CS304: { present: 32, absent: 18, percentage: 64 },
             CS305: { present: 25, absent: 25, percentage: 50 },
-             CS305: { present: 25, absent: 25, percentage: 50 },
-              CS305: { present: 25, absent: 25, percentage: 50 },
+            //  CS305: { present: 25, absent: 25, percentage: 50 },
+            //   CS305: { present: 25, absent: 25, percentage: 50 },
           },
         },
         {
@@ -106,7 +107,45 @@ const ClassTeacherDashboard = () => {
             CS304: { present: 46, absent: 4, percentage: 92 },
             CS305: { present: 43, absent: 7, percentage: 86 },
           },
+          },
+          {
+          id: 5,
+          name: "Carol Davis",
+          rollNumber: "CS21B003",
+          subjects: {
+            CS301: { present: 48, absent: 2, percentage: 96 },
+            CS302: { present: 45, absent: 5, percentage: 90 },
+            CS303: { present: 44, absent: 6, percentage: 88 },
+            CS304: { present: 46, absent: 4, percentage: 92 },
+            CS305: { present: 43, absent: 7, percentage: 86 },
+          },
+          },
+          {
+          id: 6,
+          name: "Carol Davis",
+          rollNumber: "CS21B003",
+          subjects: {
+            CS301: { present: 48, absent: 2, percentage: 96 },
+            CS302: { present: 45, absent: 5, percentage: 90 },
+            CS303: { present: 44, absent: 6, percentage: 88 },
+            CS304: { present: 46, absent: 4, percentage: 92 },
+            CS305: { present: 43, absent: 7, percentage: 86 },
+          },
+          },
+          {
+          id: 8,
+          name: "Carol Davis",
+          rollNumber: "CS21B003",
+          subjects: {
+            CS301: { present: 48, absent: 2, percentage: 96 },
+            CS302: { present: 45, absent: 5, percentage: 90 },
+            CS303: { present: 44, absent: 6, percentage: 88 },
+            CS304: { present: 46, absent: 4, percentage: 92 },
+            CS305: { present: 43, absent: 7, percentage: 86 },
+          },
+          
         },
+        
       ])
 
       setPendingRequests([
@@ -189,7 +228,7 @@ const ClassTeacherDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className= " fixed top-0 left-0  w-full z-50 bg-white shadow-sm border-b">
+         <header className=" fixed top-0 left-0  w-full z-50 bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-3">
@@ -207,11 +246,11 @@ const ClassTeacherDashboard = () => {
             </div>
             <div className="flex items-center gap-4">
               {/* <button className="relative p-2 text-gray-400 hover:text-gray-500">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-5 5v-5z" />
-                </svg>
-                <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-400"></span>
-              </button> */}
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-5 5v-5z" />
+              </svg>
+              <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-400"></span>
+            </button> */}
               <div className="text-right hidden sm:block" onClick={() => navigate("/class-teacher/profile")}>
                 <p className="text-sm font-medium text-gray-900">{user?.name}</p>
                 <p className="text-xs text-gray-500">{user?.teacherInfo?.employeeId}</p>
@@ -227,9 +266,9 @@ const ClassTeacherDashboard = () => {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
         {/* Class Info Header */}
-         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <div className="flex justify-between items-start">
             <div>
               <h2 className="text-2xl font-bold text-gray-900">{classData.className}</h2>
@@ -303,9 +342,9 @@ const ClassTeacherDashboard = () => {
                 <button className="w-full text-left px-3 py-2 text-sm bg-green-50 text-green-700 rounded hover:bg-green-100" onClick={() => navigate("/class-teacher/downloadReports")}>
                   Download Report
                 </button>
-                {/* <button className="w-full text-left px-3 py-2 text-sm bg-purple-50 text-purple-700 rounded hover:bg-purple-100">
-                  Send Notification
-                </button> */}
+                <button className="w-full text-left px-3 py-2 text-sm bg-purple-50 text-purple-700 rounded hover:bg-purple-100"  onClick={() => navigate("/class-teacher/TimeTable")}>
+                 TimeTable
+                </button>
                 <button className="w-full text-left px-3 py-2 text-sm bg-yellow-50 text-yellow-700 rounded hover:bg-yellow-100" onClick={() => navigate("/class-teacher/viewCalendar")}>
                   View Calendar
                 </button>
@@ -318,19 +357,38 @@ const ClassTeacherDashboard = () => {
             <div className="bg-white rounded-lg shadow-md">
               <div className="px-6 py-4 border-b border-gray-200">
                 <h3 className="text-lg font-semibold text-gray-900">Student Attendance Overview</h3>
+                {/* Search Input with Icon */}
+                <div className="relative w-64">
+                  <input
+                    type="text"
+                    placeholder="Search by Roll No. or Name"
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <svg
+                    className="absolute left-3 top-2.5 h-5 w-5 text-gray-400 pointer-events-none"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  </svg>
+                </div>
               </div>
-              <div className="relative">
-                <div className="overflow-x-auto">
+               <div className="relative">
+                <div className="overflow-x-auto max-h-[600px] overflow-y-auto overflow-y-scroll scrollbar-hide">
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th className="sticky left-0 z-10 bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">
+                        <th className="sticky left-0 top-0 z-20 bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">
                           Student
                         </th>
                         {subjects.map((subject) => (
                           <th
                             key={subject.code}
-                            className="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[120px]"
+                            className="sticky top-0 bg-gray-50 px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[120px]"
                           >
                             <div>{subject.code}</div>
                             <div className="text-xs font-normal text-gray-400 mt-1 truncate">{subject.name}</div>
@@ -338,23 +396,28 @@ const ClassTeacherDashboard = () => {
                         ))}
                       </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {students.map((student) => (
-                        <tr key={student.id} className="hover:bg-gray-50">
-                          <td className="sticky left-0 z-10 bg-white px-6 py-4 whitespace-nowrap border-r border-gray-200">
-                            <div
-                              className="cursor-pointer hover:text-blue-600"
-                             onClick={() => navigate("/class-teacher/students-detail")}
-                            >
-                              <div className="text-sm font-medium text-gray-900 hover:text-blue-600">
-                                {student.name}
-                              </div>
-                              <div className="text-sm text-gray-500">{student.rollNumber}</div>
-                            </div>
-                          </td>
-                          {subjects.map((subject) => {
-                            const attendance = student.subjects[subject.code]
-                            return (
+                     <tbody className="bg-white divide-y divide-gray-200">
+            {students
+              .filter(student =>
+                student.rollNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                student.name.toLowerCase().includes(searchTerm.toLowerCase())
+              )
+              .map((student) => (
+                <tr key={student.id} className="hover:bg-gray-50">
+                  <td className="sticky left-0 z-10 bg-white px-6 py-4 whitespace-nowrap border-r border-gray-200">
+                    <div
+                      className="cursor-pointer hover:text-blue-600"
+                      onClick={() => navigate("/class-teacher/students-detail")}
+                    >
+                      <div className="text-sm font-medium text-gray-900 hover:text-blue-600">
+                        {student.name}
+                      </div>
+                      <div className="text-sm text-gray-500">{student.rollNumber}</div>
+                    </div>
+                  </td>
+                  {subjects.map((subject) => {
+                    const attendance = student.subjects[subject.code]
+                    return (
                               <td key={subject.code} className="px-3 py-4 whitespace-nowrap text-center">
                                 <div className="space-y-1">
                                   <div className="flex justify-center gap-2 text-xs">
@@ -372,9 +435,8 @@ const ClassTeacherDashboard = () => {
                           })}
                         </tr>
                       ))}
-                    </tbody>
-                  </table>
-                </div>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

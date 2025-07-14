@@ -11,7 +11,7 @@ import StudentSubjectDetail from "./pages/student/SubjectDetail"
 import StudentQRScan from "./pages/student/QRScan"
 import StudentRequests from "./pages/student/Requests"
 import StudentProfile from "./pages/student/Profile"
-import StudentCalendar from "./pages/student/Calendar"
+import TimeTable from "./pages/student/TimeTable"
 
 // Class Teacher pages
 import ClassTeacherDashboard from "./pages/class-teacher/Dashboard"
@@ -110,14 +110,14 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              {/* <Route
-                path="/student/calendar"
+              <Route
+                path="/student/timeTable"
                 element={
                   <ProtectedRoute allowedRoles={["student"]}>
-                    <StudentCalendar />
+                    <TimeTable />
                   </ProtectedRoute>
                 }
-              /> */}
+              />
 
               {/* Class Teacher Routes */}
               <Route
@@ -173,6 +173,14 @@ function App() {
                 element={
                   <ProtectedRoute allowedRoles={["class_teacher"]}>
                     <ViewCalendar/>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/class-teacher/timeTable"
+                element={
+                  <ProtectedRoute allowedRoles={["class_teacher"]}>
+                    <TimeTable />
                   </ProtectedRoute>
                 }
               />

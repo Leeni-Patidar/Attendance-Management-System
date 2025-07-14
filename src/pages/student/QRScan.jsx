@@ -34,7 +34,6 @@ const QRScan = () => {
   }
 
   const simulateQRScan = () => {
-    // Simulate successful QR scan
     const mockResult = {
       success: true,
       message: "Attendance marked successfully!",
@@ -55,7 +54,6 @@ const QRScan = () => {
   const handleImageUpload = () => {
     if (!selectedFile) return
 
-    // Simulate processing
     setTimeout(() => {
       setScanResult({
         success: true,
@@ -79,7 +77,10 @@ const QRScan = () => {
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center h-16">
-            <button onClick={() => navigate(-1)} className="mr-4 p-2 text-gray-400 hover:text-gray-600">
+            <button
+              onClick={() => navigate(-1)}
+              className="mr-4 p-2 text-gray-400 hover:text-gray-600"
+            >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
               </svg>
@@ -98,69 +99,79 @@ const QRScan = () => {
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">📷 Camera Scanner</h3>
 
-            {!isScanning && !scanResult && (
+            {!scanResult && (
               <div className="space-y-4">
-                <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
-                  <div className="text-center">
-                    <svg
-                      className="w-16 h-16 mx-auto text-gray-400 mb-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-                    <p className="text-sm text-gray-600">Camera preview will appear here</p>
-                  </div>
+                <div className="aspect-square bg-black rounded-lg relative overflow-hidden flex items-center justify-center">
+                  {isScanning ? (
+                    <>
+                      <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 border-2 border-white border-dashed rounded-lg m-8"></div>
+                    </>
+                  ) : (
+                    <div className="text-center">
+                      <svg
+                        className="w-16 h-16 mx-auto text-gray-400 mb-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                      <p className="text-sm text-gray-600">Camera preview will appear here</p>
+                    </div>
+                  )}
                 </div>
-                <button
-                  onClick={startScanning}
-                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
-                >
-                  Start Camera
-                </button>
-              </div>
-            )}
 
-            {isScanning && (
-              <div className="space-y-4">
-                <div className="aspect-square bg-black rounded-lg relative overflow-hidden">
-                  <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 border-2 border-white border-dashed rounded-lg m-8"></div>
-                </div>
-                <div className="flex gap-2">
+                {!isScanning ? (
                   <button
-                    onClick={simulateQRScan}
-                    className="flex-1 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700"
+                    onClick={startScanning}
+                    className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
                   >
-                    Simulate Scan
+                    Start Camera
                   </button>
-                  <button
-                    onClick={stopScanning}
-                    className="flex-1 bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700"
-                  >
-                    Stop
-                  </button>
-                </div>
-                <p className="text-xs text-center text-gray-600">Position the QR code within the frame</p>
+                ) : (
+                  <>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={simulateQRScan}
+                        className="flex-1 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700"
+                      >
+                        Simulate Scan
+                      </button>
+                      <button
+                        onClick={stopScanning}
+                        className="flex-1 bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700"
+                      >
+                        Stop
+                      </button>
+                    </div>
+                    <p className="text-xs text-center text-gray-600">
+                      Position the QR code within the frame
+                    </p>
+                  </>
+                )}
               </div>
             )}
 
             {scanResult && (
               <div className="space-y-4">
                 <div
-                  className={`p-4 rounded-lg border ${scanResult.success ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"}`}
+                  className={`p-4 rounded-lg border ${
+                    scanResult.success
+                      ? "bg-green-50 border-green-200"
+                      : "bg-red-50 border-red-200"
+                  }`}
                 >
                   <div className="flex items-center gap-2 mb-2">
                     {scanResult.success ? (
@@ -179,8 +190,12 @@ const QRScan = () => {
                   <p className={`text-sm ${scanResult.success ? "text-green-700" : "text-red-700"}`}>
                     {scanResult.message}
                   </p>
-                  {scanResult.subject && <p className="text-xs text-gray-600 mt-1">Subject: {scanResult.subject}</p>}
-                  <p className="text-xs text-gray-500 mt-2">{scanResult.timestamp.toLocaleString()}</p>
+                  {scanResult.subject && (
+                    <p className="text-xs text-gray-600 mt-1">Subject: {scanResult.subject}</p>
+                  )}
+                  <p className="text-xs text-gray-500 mt-2">
+                    {scanResult.timestamp.toLocaleString()}
+                  </p>
                 </div>
                 <button
                   onClick={() => {
@@ -218,7 +233,9 @@ const QRScan = () => {
                   <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
                     <p className="text-sm text-blue-800 font-medium">File selected:</p>
                     <p className="text-sm text-blue-700">{selectedFile.name}</p>
-                    <p className="text-xs text-blue-600 mt-1">Size: {(selectedFile.size / 1024).toFixed(1)} KB</p>
+                    <p className="text-xs text-blue-600 mt-1">
+                      Size: {(selectedFile.size / 1024).toFixed(1)} KB
+                    </p>
                   </div>
 
                   <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center">

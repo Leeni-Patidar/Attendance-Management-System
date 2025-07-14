@@ -24,7 +24,6 @@ const DownloadReport = ({ onBack, students = [], subjects = [] }) => {
       label: "Student Details Report",
       description: "Complete student information and contact details",
     },
-    { value: "performance", label: "Performance Report", description: "Academic performance and grades analysis" },
     { value: "parent-contact", label: "Parent Contact Report", description: "Parent and guardian contact information" },
     { value: "low-attendance", label: "Low Attendance Alert", description: "Students with attendance below 75%" },
   ]
@@ -109,16 +108,16 @@ const DownloadReport = ({ onBack, students = [], subjects = [] }) => {
       </header>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="flex justify-center">
           {/* Configuration Panel */}
-          <div className="lg:col-span-2">
+          <div className="w-full max-w-2xl">
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-6">Report Configuration</h2>
 
               <div className="space-y-6">
                 {/* Report Type */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">Report Type</label>
+                  {/* <label className="block text-sm font-medium text-gray-700 mb-3">Report Type</label> */}
                   <div className="space-y-3">
                     {reportTypes.map((type) => (
                       <label key={type.value} className="flex items-start">
@@ -223,121 +222,7 @@ const DownloadReport = ({ onBack, students = [], subjects = [] }) => {
                   </div>
                 </div>
 
-                {/* Additional Options */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">Additional Options</label>
-                  <div className="space-y-3">
-                    <label className="flex items-center">
-                      <input
-                        type="checkbox"
-                        checked={reportConfig.includeGraphs}
-                        onChange={(e) => handleConfigChange("includeGraphs", e.target.checked)}
-                        className="mr-2"
-                      />
-                      Include Charts and Graphs
-                    </label>
-                    <label className="flex items-center">
-                      <input
-                        type="checkbox"
-                        checked={reportConfig.includeStudentPhotos}
-                        onChange={(e) => handleConfigChange("includeStudentPhotos", e.target.checked)}
-                        className="mr-2"
-                      />
-                      Include Student Photos
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Preview Panel */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-md p-6 sticky top-8">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Report Preview</h3>
-
-              {previewData && (
-                <div className="space-y-4">
-                  <div className="bg-gray-50 p-4 rounded-md">
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Report Type:</span>
-                        <span className="font-medium capitalize">{reportConfig.type.replace("-", " ")}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Format:</span>
-                        <span className="font-medium uppercase">{reportConfig.format}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Students:</span>
-                        <span className="font-medium">{previewData.totalStudents}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Subjects:</span>
-                        <span className="font-medium">
-                          {reportConfig.subject === "all" ? `All (${previewData.subjects})` : "1"}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Date Range:</span>
-                        <span className="font-medium capitalize">{previewData.dateRange}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Est. Pages:</span>
-                        <span className="font-medium">{previewData.estimatedPages}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Est. Size:</span>
-                        <span className="font-medium">{previewData.fileSize}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <h4 className="font-medium text-gray-900">Report Contents:</h4>
-                    <ul className="text-sm text-gray-600 space-y-1">
-                      {reportConfig.type === "attendance" && (
-                        <>
-                          <li>• Student attendance records</li>
-                          <li>• Subject-wise breakdown</li>
-                          <li>• Attendance percentages</li>
-                          {reportConfig.includeGraphs && <li>• Attendance charts</li>}
-                        </>
-                      )}
-                      {reportConfig.type === "student-details" && (
-                        <>
-                          <li>• Personal information</li>
-                          <li>• Contact details</li>
-                          <li>• Parent/Guardian info</li>
-                          {reportConfig.includeStudentPhotos && <li>• Student photographs</li>}
-                        </>
-                      )}
-                      {reportConfig.type === "performance" && (
-                        <>
-                          <li>• Academic performance</li>
-                          <li>• Grade analysis</li>
-                          <li>• Subject-wise scores</li>
-                          {reportConfig.includeGraphs && <li>• Performance trends</li>}
-                        </>
-                      )}
-                      {reportConfig.type === "parent-contact" && (
-                        <>
-                          <li>• Parent contact details</li>
-                          <li>• Emergency contacts</li>
-                          <li>• Communication preferences</li>
-                        </>
-                      )}
-                      {reportConfig.type === "low-attendance" && (
-                        <>
-                          <li>• Students below 75%</li>
-                          <li>• Attendance warnings</li>
-                          <li>• Action recommendations</li>
-                        </>
-                      )}
-                    </ul>
-                  </div>
-
-                  <button
+                <button
                     onClick={handleDownload}
                     disabled={loading}
                     className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -369,12 +254,37 @@ const DownloadReport = ({ onBack, students = [], subjects = [] }) => {
                     Cancel
                   </button>
                 </div>
-              )}
+
+                {/* Additional Options */}
+                {/* <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">Additional Options</label>
+                  <div className="space-y-3">
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={reportConfig.includeGraphs}
+                        onChange={(e) => handleConfigChange("includeGraphs", e.target.checked)}
+                        className="mr-2"
+                      />
+                      Include Charts and Graphs
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={reportConfig.includeStudentPhotos}
+                        onChange={(e) => handleConfigChange("includeStudentPhotos", e.target.checked)}
+                        className="mr-2"
+                      />
+                      Include Student Photos
+                    </label>
+                  </div>
+                </div> */}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    // </div>
   )
 }
 

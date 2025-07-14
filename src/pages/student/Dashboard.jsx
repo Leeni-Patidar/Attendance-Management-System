@@ -68,6 +68,33 @@ const StudentDashboard = () => {
           absentDays: 15,
           attendance: 57,
         },
+        {
+          id: 7,
+          courseName: "Database Management Systems",
+          courseCode: "CS302",
+          totalClasses: 45,
+          presentDays: 38,
+          absentDays: 7,
+          attendance: 84,
+        },
+        {
+          id: 8,
+          courseName: "Database Management Systems",
+          courseCode: "CS302",
+          totalClasses: 45,
+          presentDays: 38,
+          absentDays: 7,
+          attendance: 84,
+        },
+        {
+          id: 9,
+          courseName: "Database Management Systems",
+          courseCode: "CS302",
+          totalClasses: 45,
+          presentDays: 38,
+          absentDays: 7,
+          attendance: 84,
+        },
       ])
       setLoading(false)
     }, 1000)
@@ -97,7 +124,7 @@ const StudentDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50  pb-8 ">
       <header className="  fixed top-0 left-0 w-full z-50 bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -166,6 +193,10 @@ const StudentDashboard = () => {
         onClick={() => navigate("/student/requests")}>
               Request
             </div>
+             <div className="bg-white rounded-lg shadow-md mt-3 p-6 cursor-pointer"
+        onClick={() => navigate("/student/timeTable")}>
+              Time Table
+            </div>
 
             {/* <div className="bg-white rounded-lg shadow-md p-6 mt-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
@@ -184,7 +215,7 @@ const StudentDashboard = () => {
           </div>
 
           {/* Main Content */}
-      <div className="flex-1 ml-[276px] pt-24 pl-16 pr-16 h-screen overflow-y-auto">
+      <div className="flex-1 ml-[276px] pt-20 pl-16 pr-16 h-screen overflow-y-auto">
 
             {/* <div className="mb-6">
               <h2 className="text-2xl font-bold text-gray-900">Subject Attendance</h2>

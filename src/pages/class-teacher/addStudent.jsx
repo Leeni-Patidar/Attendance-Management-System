@@ -162,9 +162,8 @@ const AddStudent = ({ onBack, onSubmit }) => {
                         type="text"
                         value={formData.name}
                         onChange={(e) => handleInputChange("name", e.target.value)}
-                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                          errors.name ? "border-red-500" : "border-gray-300"
-                        }`}
+                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.name ? "border-red-500" : "border-gray-300"
+                          }`}
                         placeholder="Enter student's full name"
                       />
                       {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
@@ -178,9 +177,8 @@ const AddStudent = ({ onBack, onSubmit }) => {
                         type="text"
                         value={formData.rollNumber}
                         onChange={(e) => handleInputChange("rollNumber", e.target.value)}
-                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                          errors.rollNumber ? "border-red-500" : "border-gray-300"
-                        }`}
+                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.rollNumber ? "border-red-500" : "border-gray-300"
+                          }`}
                         placeholder="e.g., CS21B004"
                       />
                       {errors.rollNumber && <p className="text-red-500 text-xs mt-1">{errors.rollNumber}</p>}
@@ -194,9 +192,8 @@ const AddStudent = ({ onBack, onSubmit }) => {
                         type="email"
                         value={formData.email}
                         onChange={(e) => handleInputChange("email", e.target.value)}
-                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                          errors.email ? "border-red-500" : "border-gray-300"
-                        }`}
+                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.email ? "border-red-500" : "border-gray-300"
+                          }`}
                         placeholder="student@college.edu"
                       />
                       {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
@@ -210,9 +207,8 @@ const AddStudent = ({ onBack, onSubmit }) => {
                         type="tel"
                         value={formData.phone}
                         onChange={(e) => handleInputChange("phone", e.target.value)}
-                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                          errors.phone ? "border-red-500" : "border-gray-300"
-                        }`}
+                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.phone ? "border-red-500" : "border-gray-300"
+                          }`}
                         placeholder="+1234567890"
                       />
                       {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
@@ -253,9 +249,8 @@ const AddStudent = ({ onBack, onSubmit }) => {
                         value={formData.address}
                         onChange={(e) => handleInputChange("address", e.target.value)}
                         rows="3"
-                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                          errors.address ? "border-red-500" : "border-gray-300"
-                        }`}
+                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.address ? "border-red-500" : "border-gray-300"
+                          }`}
                         placeholder="Enter complete address"
                       />
                       {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
@@ -278,9 +273,8 @@ const AddStudent = ({ onBack, onSubmit }) => {
                         type="text"
                         value={formData.parentName}
                         onChange={(e) => handleInputChange("parentName", e.target.value)}
-                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                          errors.parentName ? "border-red-500" : "border-gray-300"
-                        }`}
+                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.parentName ? "border-red-500" : "border-gray-300"
+                          }`}
                         placeholder="Enter parent/guardian name"
                       />
                       {errors.parentName && <p className="text-red-500 text-xs mt-1">{errors.parentName}</p>}
@@ -294,9 +288,8 @@ const AddStudent = ({ onBack, onSubmit }) => {
                         type="tel"
                         value={formData.parentPhone}
                         onChange={(e) => handleInputChange("parentPhone", e.target.value)}
-                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                          errors.parentPhone ? "border-red-500" : "border-gray-300"
-                        }`}
+                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.parentPhone ? "border-red-500" : "border-gray-300"
+                          }`}
                         placeholder="+1234567890"
                       />
                       {errors.parentPhone && <p className="text-red-500 text-xs mt-1">{errors.parentPhone}</p>}
@@ -328,7 +321,6 @@ const AddStudent = ({ onBack, onSubmit }) => {
 
                 <div>
                   <h3 className="text-md font-medium text-gray-900 border-b pb-2 mb-4">Academic Information</h3>
-
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Previous School</label>
@@ -340,7 +332,6 @@ const AddStudent = ({ onBack, onSubmit }) => {
                         placeholder="Name of previous school"
                       />
                     </div>
-
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Admission Date</label>
                       <input
@@ -352,130 +343,104 @@ const AddStudent = ({ onBack, onSubmit }) => {
                     </div>
                   </div>
                 </div>
-
+              </div>
+            </div>
+            {/* Subject Selection */}
+            <div className="mt-8">
+              <h3 className="text-md font-medium text-gray-900 border-b pb-2 mb-4">Subject Selection</h3>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Mandatory Subjects (left) */}
                 <div>
-                  <h3 className="text-md font-medium text-gray-900 border-b pb-2 mb-4">Subject Selection</h3>
-
-                  <div className="space-y-4">
-                    <div className="bg-blue-50 p-4 rounded-md">
-                      <div className="flex">
-                        <svg
-                          className="w-5 h-5 text-blue-400 mr-2 mt-0.5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
+                  <h4 className="text-sm font-medium text-gray-700 mb-2">Mandatory Subjects</h4>
+                  <div className="space-y-2">
+                    {availableSubjects
+                      .filter((subject) => subject.mandatory)
+                      .map((subject) => (
+                        <div
+                          key={subject.code}
+                          className="flex items-center p-3 bg-gray-50 rounded-lg"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          <input
+                            type="checkbox"
+                            id={subject.code}
+                            checked={selectedSubjects.includes(subject.code)}
+                            onChange={(e) => handleSubjectChange(subject.code, e.target.checked)}
+                            disabled={subject.mandatory}
+                            className="mr-3"
                           />
-                        </svg>
-                        <div>
-                          <h4 className="text-sm font-medium text-blue-800">Subject Enrollment</h4>
-                          <p className="text-sm text-blue-700 mt-1">
-                            Mandatory subjects are automatically selected. You can choose additional elective subjects.
-                          </p>
+                          <div className="flex-1">
+                            <label htmlFor={subject.code} className="font-medium text-gray-900 cursor-pointer">
+                              {subject.code} - {subject.name}
+                            </label>
+                            <p className="text-sm text-gray-600">Teacher: {subject.teacher}</p>
+                          </div>
+                          <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Mandatory</span>
                         </div>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 gap-3">
-                      <div className="mb-3">
-                        <h4 className="text-sm font-medium text-gray-700 mb-2">Mandatory Subjects</h4>
-                        <div className="space-y-2">
-                          {availableSubjects
-                            .filter((subject) => subject.mandatory)
-                            .map((subject) => (
-                              <div key={subject.code} className="flex items-center p-3 bg-gray-50 rounded-lg">
-                                <input
-                                  type="checkbox"
-                                  id={subject.code}
-                                  checked={selectedSubjects.includes(subject.code)}
-                                  onChange={(e) => handleSubjectChange(subject.code, e.target.checked)}
-                                  disabled={subject.mandatory}
-                                  className="mr-3"
-                                />
-                                <div className="flex-1">
-                                  <label htmlFor={subject.code} className="font-medium text-gray-900 cursor-pointer">
-                                    {subject.code} - {subject.name}
-                                  </label>
-                                  <p className="text-sm text-gray-600">Teacher: {subject.teacher}</p>
-                                </div>
-                                <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Mandatory</span>
-                              </div>
-                            ))}
-                        </div>
-                      </div>
-
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-700 mb-2">Elective Subjects</h4>
-                        <div className="space-y-2">
-                          {availableSubjects
-                            .filter((subject) => !subject.mandatory)
-                            .map((subject) => (
-                              <div
-                                key={subject.code}
-                                className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50"
-                              >
-                                <input
-                                  type="checkbox"
-                                  id={subject.code}
-                                  checked={selectedSubjects.includes(subject.code)}
-                                  onChange={(e) => handleSubjectChange(subject.code, e.target.checked)}
-                                  className="mr-3"
-                                />
-                                <div className="flex-1">
-                                  <label htmlFor={subject.code} className="font-medium text-gray-900 cursor-pointer">
-                                    {subject.code} - {subject.name}
-                                  </label>
-                                  <p className="text-sm text-gray-600">Teacher: {subject.teacher}</p>
-                                </div>
-                                <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Elective</span>
-                              </div>
-                            ))}
-                        </div>
-                      </div>
-
-                      <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-                        <p className="text-sm text-gray-600">
-                          <strong>Selected Subjects ({selectedSubjects.length}):</strong>{" "}
-                          {selectedSubjects.length > 0 ? selectedSubjects.join(", ") : "No subjects selected"}
-                        </p>
-                      </div>
-                    </div>
+                      ))}
                   </div>
                 </div>
-
-                {/* Information Note */}
-                <div className="bg-blue-50 p-4 rounded-md">
-                  <div className="flex">
-                    <svg
-                      className="w-5 h-5 text-blue-400 mr-2 mt-0.5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                    <div>
-                      <h4 className="text-sm font-medium text-blue-800">Important Note</h4>
-                      <p className="text-sm text-blue-700 mt-1">
-                        After adding the student, they will be automatically enrolled in all subjects for this class.
-                        You can modify subject enrollments later from the student's detail page.
-                      </p>
-                    </div>
+                {/* Elective Subjects (right) */}
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-2">Elective Subjects</h4>
+                  <div className="space-y-2">
+                    {availableSubjects
+                      .filter((subject) => !subject.mandatory)
+                      .map((subject) => (
+                        <div
+                          key={subject.code}
+                          className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50"
+                        >
+                          <input
+                            type="checkbox"
+                            id={subject.code}
+                            checked={selectedSubjects.includes(subject.code)}
+                            onChange={(e) => handleSubjectChange(subject.code, e.target.checked)}
+                            className="mr-3"
+                          />
+                          <div className="flex-1">
+                            <label htmlFor={subject.code} className="font-medium text-gray-900 cursor-pointer">
+                              {subject.code} - {subject.name}
+                            </label>
+                            <p className="text-sm text-gray-600">Teacher: {subject.teacher}</p>
+                          </div>
+                          <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Elective</span>
+                        </div>
+                      ))}
                   </div>
                 </div>
               </div>
+              <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+                <p className="text-sm text-gray-600">
+                  <strong>Selected Subjects ({selectedSubjects.length}):</strong>{" "}
+                  {selectedSubjects.length > 0 ? selectedSubjects.join(", ") : "No subjects selected"}
+                </p>
+              </div>
             </div>
-
+            {/* Information Note */}
+            <div className="bg-blue-50 p-4 rounded-md mt-8">
+              <div className="flex">
+                <svg
+                  className="w-5 h-5 text-blue-400 mr-2 mt-0.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <div>
+                  <h4 className="text-sm font-medium text-blue-800">Important Note</h4>
+                  <p className="text-sm text-blue-700 mt-1">
+                    After adding the student, they will be automatically enrolled in all subjects for this class.
+                    You can modify subject enrollments later from the student's detail page.
+                  </p>
+                </div>
+              </div>
+            </div>
             {/* Form Actions */}
             <div className="flex justify-end gap-4 mt-8 pt-6 border-t">
               <button
