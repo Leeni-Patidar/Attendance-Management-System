@@ -224,11 +224,11 @@ const SubjectTeacherDashboard = () => {
             </div>
             <div className="flex items-center gap-4">
               {/* <button className="relative p-2 text-gray-400 hover:text-gray-500">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-5 5v-5z" />
-                </svg>
-                <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-green-400"></span>
-              </button> */}
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-5 5v-5z" />
+              </svg>
+              <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-green-400"></span>
+            </button> */}
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-medium text-gray-900">{user?.name}</p>
                 <p className="text-xs text-gray-500">{user?.teacherInfo?.employeeId}</p>
@@ -278,18 +278,18 @@ const SubjectTeacherDashboard = () => {
             <div className="bg-white rounded-lg shadow-md p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Action Links</h3>
               <div className="space-y-2">
-                <button
-                  onClick={() => navigate("/subject-teacher/ManageStudents")}
-                  className="w-full text-left px-3 py-2 text-sm bg-green-50 text-green-700 rounded hover:bg-green-100"
-                >
-                  👥 Manage Students
-                </button>
                 {/* <button
-                  onClick={() => navigate("/subject-teacher/ViewReports")}
-                  className="w-full text-left px-3 py-2 text-sm bg-blue-50 text-blue-700 rounded hover:bg-blue-100"
-                >
-                  📊 View Reports
-                </button> */}
+                onClick={() => navigate("/subject-teacher/ManageStudents")}
+                className="w-full text-left px-3 py-2 text-sm bg-green-50 text-green-700 rounded hover:bg-green-100"
+              >
+                👥 Manage Students
+              </button> */}
+                {/* <button
+                onClick={() => navigate("/subject-teacher/ViewReports")}
+                className="w-full text-left px-3 py-2 text-sm bg-blue-50 text-blue-700 rounded hover:bg-blue-100"
+              >
+                📊 View Reports
+              </button> */}
                 <button
                   onClick={() => navigate("/subject-teacher/ViewSchedule")}
                   className="w-full text-left px-3 py-2 text-sm bg-purple-50 text-purple-700 rounded hover:bg-purple-100"
@@ -302,18 +302,18 @@ const SubjectTeacherDashboard = () => {
                 >
                   📱 QR History
                 </button>
-                {/* <button
+                <button
                   onClick={() => navigate("/subject-teacher/profile")}
                   className="w-full text-left px-3 py-2 text-sm bg-indigo-50 text-indigo-700 rounded hover:bg-indigo-100"
                 >
                   👤 Profile Settings
-                </button> */}
-                <button
-                  onClick={() => navigate("/subject-teacher/AttendanceAnalytics")}
-                  className="w-full text-left px-3 py-2 text-sm bg-pink-50 text-pink-700 rounded hover:bg-pink-100"
-                >
-                  📈 Attendance Analytics
                 </button>
+                {/* <button
+                onClick={() => navigate("/subject-teacher/AttendanceAnalytics")}
+                className="w-full text-left px-3 py-2 text-sm bg-pink-50 text-pink-700 rounded hover:bg-pink-100"
+              >
+                📈 Attendance Analytics
+              </button> */}
               </div>
             </div>
 
@@ -383,13 +383,10 @@ const SubjectTeacherDashboard = () => {
                       <p>📅 {classData.schedule}</p>
                     </div>
                     <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        generateQRCode(classData.id)
-                      }}
+                      onClick={() => navigate(`/subject-teacher/class/${classData.id}`)}
                       className="mt-3 w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 text-sm"
                     >
-                      Generate QR Code
+                      View Details
                     </button>
                   </div>
                 ))}
@@ -495,23 +492,34 @@ const SubjectTeacherDashboard = () => {
               )}
 
               {/* Arrangement Classes List */}
-              <div className="space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {arrangementClasses.map((arrangement) => (
-                  <div key={arrangement.id} className="border rounded-lg p-4 bg-blue-50">
-                    <div className="flex justify-between items-start">
+                  <div
+                    key={arrangement.id}
+                    className="border rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+                  >
+                    <div className="flex justify-between items-start mb-2">
                       <div>
                         <h4 className="font-medium text-gray-900">{arrangement.className}</h4>
                         <p className="text-sm text-gray-600">{arrangement.subject}</p>
                         <p className="text-xs text-gray-500">
                           Teacher: {arrangement.subjectTeacherName} | Arranged for: {arrangement.arrangedFor}
                         </p>
-                        <p className="text-xs text-gray-500">Date: {arrangement.date}</p>
                       </div>
-                      <div className="text-right">
-                        <p className="text-sm text-gray-600">👥 {arrangement.students} students</p>
-                        <button className="text-xs text-blue-600 hover:text-blue-800 mt-1">View Details</button>
-                      </div>
+                      <span className="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
+                        Scheduled
+                      </span>
                     </div>
+                    <div className="space-y-1 text-sm text-gray-600">
+                      <p>👥 {arrangement.students} students</p>
+                      <p>📅 {arrangement.date}</p>
+                    </div>
+                   <button
+                      onClick={() => navigate(`/subject-teacher/class/${classData.id}`)}
+                      className="mt-3 w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 text-sm"
+                    >
+                      View Details
+                    </button>
                   </div>
                 ))}
               </div>

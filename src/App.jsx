@@ -27,14 +27,16 @@ import SubjectTeacherDashboard from "./pages/subject-teacher/Dashboard"
 import ClassDetail from "./pages/subject-teacher/ClassDetail"
 import SubjectTeacherProfile from "./pages/subject-teacher/Profile"
 import ArrangementClasses from "./pages/subject-teacher/ArrangementClasses"
-import AttendanceAnalytics from "./pages/subject-teacher/AttendanceAnalytics"
-import ManageStudents from "./pages/subject-teacher/ManageStudent"
+// import AttendanceAnalytics from "./pages/subject-teacher/AttendanceAnalytics"
+// import ManageStudents from "./pages/subject-teacher/ManageStudent"
 import MyClasses from "./pages/subject-teacher/MyClasses"
-import ViewReports from "./pages/subject-teacher/ViewReports"
+// import ViewReports from "./pages/subject-teacher/ViewReports"
 import ViewSchedule from "./pages/subject-teacher/ViewSchedule"
 import QRHistory from "./pages/subject-teacher/QRHistory"
 import GenerateQR from "./pages/subject-teacher/GenerateQR"
 import RecentActivity from "./pages/subject-teacher/RecentActivity"
+import GeneratedQRDisplay from "./pages/subject-teacher/Generated-qr-display"
+
 
 // Admin pages
 import AdminDashboard from "./pages/admin/Dashboard"
@@ -235,22 +237,22 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              <Route
+              {/* <Route
                 path="/subject-teacher/AttendanceAnalytics"
                 element={
                   <ProtectedRoute allowedRoles={["subject_teacher"]}>
                     <AttendanceAnalytics />
                   </ProtectedRoute>
                 }
-              />
-              <Route
+              /> */}
+              {/* <Route
                 path="/subject-teacher/ManageStudents"
                 element={
                   <ProtectedRoute allowedRoles={["subject_teacher"]}>
                     <ManageStudents/>
                   </ProtectedRoute>
                 }
-              />
+              /> */}
               <Route
                 path="/subject-teacher/MyClasses"
                 element={
@@ -267,15 +269,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              <Route
-                path="/subject-teacher/ViewReports"
-                element={
-                  <ProtectedRoute allowedRoles={["subject_teacher"]}>
-                    <ViewReports />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
+               <Route
                 path="/subject-teacher/GenerateQR"
                 element={
                   <ProtectedRoute allowedRoles={["subject_teacher"]}>
@@ -288,6 +282,14 @@ function App() {
                 element={
                   <ProtectedRoute allowedRoles={["subject_teacher"]}>
                     <RecentActivity />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/subject-teacher/generated-qr-display"
+                element={
+                  <ProtectedRoute allowedRoles={["subject_teacher"]}>
+                    <GeneratedQRDisplay />
                   </ProtectedRoute>
                 }
               />

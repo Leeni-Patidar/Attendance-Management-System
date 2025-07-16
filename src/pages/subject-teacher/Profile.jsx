@@ -9,6 +9,11 @@ const SubjectTeacherProfile = () => {
   const [loading, setLoading] = useState(true)
   const [isEditing, setIsEditing] = useState(false)
   const [editForm, setEditForm] = useState({})
+  const [showPasswordChange, setShowPasswordChange] = useState(false) // New state
+  const [currentPassword, setCurrentPassword] = useState("") // New state
+  const [newPassword, setNewPassword] = useState("") // New state
+  const [confirmNewPassword, setConfirmNewPassword] = useState("") // New state
+  const [passwordChangeMessage, setPasswordChangeMessage] = useState("") // New state
 
   useEffect(() => {
     // Mock data for profile
@@ -54,6 +59,35 @@ const SubjectTeacherProfile = () => {
     setEditForm((prev) => ({ ...prev, [field]: value }))
   }
 
+  const handleChangePassword = (e) => {
+    e.preventDefault()
+    setPasswordChangeMessage("") // Clear previous messages
+
+    if (newPassword !== confirmNewPassword) {
+      setPasswordChangeMessage("New password and confirmation do not match.")
+      return
+    }
+
+    if (newPassword.length < 6) {
+      setPasswordChangeMessage("New password must be at least 6 characters long.")
+      return
+    }
+
+    // Mock password change logic
+    console.log("Changing password for:", profileData.email)
+    console.log("Current Password:", currentPassword)
+    console.log("New Password:", newPassword)
+
+    // Simulate API call
+    setTimeout(() => {
+      setPasswordChangeMessage("Password updated successfully!")
+      setCurrentPassword("")
+      setNewPassword("")
+      setConfirmNewPassword("")
+      setShowPasswordChange(false)
+    }, 1000)
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -82,38 +116,38 @@ const SubjectTeacherProfile = () => {
               </div>
             </div>
             {/* <div className="flex gap-2">
-              {isEditing ? (
-                <>
-                  <button
-                    onClick={handleSave}
-                    className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
-                  >
-                    Save Changes
-                  </button>
-                  <button
-                    onClick={handleCancel}
-                    className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
-                  >
-                    Cancel
-                  </button>
-                </>
-              ) : (
+            {isEditing ? (
+              <>
                 <button
-                  onClick={handleEdit}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center gap-2"
+                  onClick={handleSave}
+                  className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                    />
-                  </svg>
-                  Edit Profile
+                  Save Changes
                 </button>
-              )}
-            </div> */}
+                <button
+                  onClick={handleCancel}
+                  className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
+                >
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={handleEdit}
+                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
+                </svg>
+                Edit Profile
+              </button>
+            )}
+          </div> */}
           </div>
         </div>
       </header>
@@ -337,8 +371,63 @@ const SubjectTeacherProfile = () => {
                     <h4 className="font-medium text-gray-900">Change Password</h4>
                     <p className="text-sm text-gray-600">Update your account password</p>
                   </div>
-                  <button className="text-blue-600 hover:text-blue-800 font-medium">Change</button>
+                  <button
+                    onClick={() => setShowPasswordChange(!showPasswordChange)}
+                    className="text-blue-600 hover:text-blue-800 font-medium"
+                  >
+                    {showPasswordChange ? "Cancel" : "Change"}
+                  </button>
                 </div>
+                {showPasswordChange && (
+                  <div className="p-4 bg-white border border-gray-200 rounded-lg mt-4 space-y-4">
+                    <h5 className="font-semibold text-gray-900">Update Password</h5>
+                    <form onSubmit={handleChangePassword} className="space-y-3">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+                        <input
+                          type="password"
+                          value={currentPassword}
+                          onChange={(e) => setCurrentPassword(e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                        <input
+                          type="password"
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+                        <input
+                          type="password"
+                          value={confirmNewPassword}
+                          onChange={(e) => setConfirmNewPassword(e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          required
+                        />
+                      </div>
+                      {passwordChangeMessage && (
+                        <p
+                          className={`text-sm ${passwordChangeMessage.includes("successfully") ? "text-green-600" : "text-red-600"}`}
+                        >
+                          {passwordChangeMessage}
+                        </p>
+                      )}
+                      <button
+                        type="submit"
+                        className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                      >
+                        Set New Password
+                      </button>
+                    </form>
+                  </div>
+                )}
                 <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                   <div>
                     <h4 className="font-medium text-gray-900">Two-Factor Authentication</h4>

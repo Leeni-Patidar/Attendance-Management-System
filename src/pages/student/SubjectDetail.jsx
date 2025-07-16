@@ -246,7 +246,7 @@ const SubjectDetail = () => {
                   style={{ minWidth: 220 }}
                 >
                   <img
-                    src=" "
+                    src="Attendance-Management-System/public/qr code.png"
                     alt="Scan QR"
                     className="w-16 h-16 mb-3"
                   />

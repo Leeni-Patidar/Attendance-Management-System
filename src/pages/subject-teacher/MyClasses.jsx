@@ -88,10 +88,8 @@ const MyClasses = () => {
               </button>
               <div>
                 <h1 className="text-xl font-semibold text-gray-900">My Classes</h1>
-                <p className="text-sm text-gray-500">Manage all your classes</p>
               </div>
             </div>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Add New Class</button>
           </div>
         </div>
       </header>

@@ -112,12 +112,6 @@ const QRHistory = () => {
               </div>
             </div>
             <div className="flex gap-2">
-              <button
-                onClick={() => navigate("/subject-teacher/generate-qr")}
-                className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
-              >
-                Generate New QR
-              </button>
               <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Export History</button>
             </div>
           </div>
@@ -277,8 +271,8 @@ const QRHistory = () => {
                     Status
                   </th>
                   {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
-                  </th> */}
+                  Actions
+                </th> */}
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -320,9 +314,9 @@ const QRHistory = () => {
                       </span>
                     </td>
                     {/* <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <button className="text-blue-600 hover:text-blue-900 mr-3">View Details</button>
-                      <button className="text-green-600 hover:text-green-900">Regenerate</button>
-                    </td> */}
+                    <button className="text-blue-600 hover:text-blue-900 mr-3">View Details</button>
+                    <button className="text-green-600 hover:text-green-900">Regenerate</button>
+                  </td> */}
                   </tr>
                 ))}
               </tbody>
