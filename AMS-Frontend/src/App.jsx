@@ -40,12 +40,11 @@ import GeneratedQRDisplay from "./pages/subject-teacher/Generated-qr-display"
 
 // Admin pages
 import AdminDashboard from "./pages/admin/Dashboard"
-import AdminUsers from "./pages/admin/Users"
-import AdminReports from "./pages/admin/Reports"
-import AdminSettings from "./pages/admin/Settings"
-// import AdminClasses from "./pages/admin/Classes"
-// import AdminSubjects from "./pages/admin/Subjects"
-// import AdminBackup from "./pages/admin/Backup"
+// import Profile from "./pages/admin/Profile"
+// import DownloadReport from "./pages/admin/downloadReport"
+// import ClassDetail from "./pages/admin/ClassDetail"
+// import RecentActivity from "./pages/admin/RecentActivity"
+// import ViewCalendar from "./pages/admin/viewCalendar"
 
 // Shared pages
 import NotFound from "./pages/NotFound"
@@ -67,7 +66,6 @@ function App() {
           <div className="App">
             <Routes>
               {/* Public Routes */}
-              {/* <Route path="/" element={<LoginPage />} /> */}
               <Route path="/login" element={<LoginPage />} />
               <Route path="/unauthorized" element={<Unauthorized />} />
 
@@ -303,54 +301,56 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              <Route
-                path="/admin/users"
-                element={
-                  <ProtectedRoute allowedRoles={["admin"]}>
-                    <AdminUsers />
-                  </ProtectedRoute>
-                }
-              />
               {/* <Route
-                path="/admin/classes"
+                path="/admin/profile"
                 element={
                   <ProtectedRoute allowedRoles={["admin"]}>
-                    <AdminClasses />
+                    <Profile />
                   </ProtectedRoute>
                 }
               /> */}
               {/* <Route
-                path="/admin/subjects"
+                path="/admin/downloadReport"
                 element={
                   <ProtectedRoute allowedRoles={["admin"]}>
-                    <AdminSubjects />
+                    <DownloadReports/>
                   </ProtectedRoute>
                 }
               /> */}
-              <Route
-                path="/admin/reports"
-                element={
-                  <ProtectedRoute allowedRoles={["admin"]}>
-                    <AdminReports />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/settings"
-                element={
-                  <ProtectedRoute allowedRoles={["admin"]}>
-                    <AdminSettings />
-                  </ProtectedRoute>
-                }
-              />
               {/* <Route
-                path="/admin/backup"
+                path="/admin/RecentActivity"
                 element={
                   <ProtectedRoute allowedRoles={["admin"]}>
-                    <AdminBackup />
+                    <RecentActivity/>
                   </ProtectedRoute>
                 }
               /> */}
+              {/* <Route
+                path="/admin/TeacherDetail"
+                element={
+                  <ProtectedRoute allowedRoles={["admin"]}>
+                    < />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/dashboard"
+                element={
+                  <ProtectedRoute allowedRoles={["admin"]}>
+                    <AdminDashboard />
+                  </ProtectedRoute>
+                }
+              /> */}
+              {/* <Route
+                path="/admin/viewschedule"
+                element={
+                  <ProtectedRoute allowedRoles={["admin"]}>
+                    <ViewCalendar/>
+                  </ProtectedRoute>
+                }
+              /> */}
+
+             
 
               {/* Catch all route */}
               <Route path="*" element={<NotFound />} />

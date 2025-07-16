@@ -223,12 +223,6 @@ const SubjectTeacherDashboard = () => {
               <h1 className="text-xl font-semibold text-gray-900">Subject Teacher Dashboard</h1>
             </div>
             <div className="flex items-center gap-4">
-              {/* <button className="relative p-2 text-gray-400 hover:text-gray-500">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-5 5v-5z" />
-              </svg>
-              <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-green-400"></span>
-            </button> */}
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-medium text-gray-900">{user?.name}</p>
                 <p className="text-xs text-gray-500">{user?.teacherInfo?.employeeId}</p>

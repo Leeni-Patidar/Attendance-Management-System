@@ -7,12 +7,11 @@ import { Navigate } from "react-router-dom"
 const LoginPage = () => {
   const { login, isAuthenticated, user } = useAuth()
   const [userType, setUserType] = useState("")
-  const [credentials, setCredentials] = useState({ email: "", password: "" })
+  const [credentials, setCredentials] = useState({ id: "", password: "" })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
   if (isAuthenticated) {
-    // Redirect authenticated users to their dashboard based on role
     let redirectUrl = "/login"
     if (user?.role === "student") redirectUrl = "/student/dashboard"
     else if (user?.role === "class_teacher") redirectUrl = "/class-teacher/dashboard"
@@ -27,7 +26,7 @@ const LoginPage = () => {
     setError("")
 
     const result = await login({
-      email: credentials.email,
+      id: credentials.id,
       password: credentials.password,
       userType: userType,
     })
@@ -43,10 +42,10 @@ const LoginPage = () => {
 
   const fillDemoCredentials = (role) => {
     const demoCredentials = {
-      student: { email: "student@college.edu", password: "demo123" },
-      class_teacher: { email: "class.teacher@college.edu", password: "demo123" },
-      subject_teacher: { email: "subject.teacher@college.edu", password: "demo123" },
-      admin: { email: "admin@college.edu", password: "demo123" },
+      student: { id: "student001", password: "demo123" },
+      class_teacher: { id: "classteach01", password: "demo123" },
+      subject_teacher: { id: "subjectteach01", password: "demo123" },
+      admin: { id: "admin01", password: "demo123" },
     }
 
     setUserType(role)
@@ -86,7 +85,7 @@ const LoginPage = () => {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             >
-              {/* <option value="">Select your role</option> */}
+              <option value="">Select your role</option>
               <option value="student">Student</option>
               <option value="class_teacher">Class Teacher</option>
               <option value="subject_teacher">Subject Teacher</option>
@@ -95,15 +94,15 @@ const LoginPage = () => {
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Email
+            <label htmlFor="id" className="block text-sm font-medium text-gray-700 mb-1">
+              ID
             </label>
             <input
-              id="email"
-              type="email"
-              placeholder="Enter your email"
-              value={credentials.email}
-              onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
+              id="id"
+              type="text"
+              placeholder="Enter your ID"
+              value={credentials.id}
+              onChange={(e) => setCredentials({ ...credentials, id: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
@@ -127,7 +126,7 @@ const LoginPage = () => {
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-            disabled={!userType || !credentials.email || !credentials.password || loading}
+            disabled={!userType || !credentials.id || !credentials.password || loading}
           >
             {loading ? "Signing In..." : "Sign In"}
           </button>

@@ -380,6 +380,76 @@ const Profile = () => {
                 </div>
               </div>
             </div>
+
+ {/* Account Settings */}
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Account Settings</h3>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div>
+                    <h4 className="font-medium text-gray-900">Change Password</h4>
+                    <p className="text-sm text-gray-600">Update your account password</p>
+                  </div>
+                  <button
+                    onClick={() => setShowPasswordChange(!showPasswordChange)}
+                    className="text-blue-600 hover:text-blue-800 font-medium"
+                  >
+                    {showPasswordChange ? "Cancel" : "Change"}
+                  </button>
+                </div>
+                {showPasswordChange && (
+                  <div className="p-4 bg-white border border-gray-200 rounded-lg mt-4 space-y-4">
+                    <h5 className="font-semibold text-gray-900">Update Password</h5>
+                    <form onSubmit={handleChangePassword} className="space-y-3">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+                        <input
+                          type="password"
+                          value={currentPassword}
+                          onChange={(e) => setCurrentPassword(e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                        <input
+                          type="password"
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+                        <input
+                          type="password"
+                          value={confirmNewPassword}
+                          onChange={(e) => setConfirmNewPassword(e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          required
+                        />
+                      </div>
+                      {passwordChangeMessage && (
+                        <p
+                          className={`text-sm ${passwordChangeMessage.includes("successfully") ? "text-green-600" : "text-red-600"}`}
+                        >
+                          {passwordChangeMessage}
+                        </p>
+                      )}
+                      <button
+                        type="submit"
+                        className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                      >
+                        Set New Password
+                      </button>
+                    </form>
+                  </div>
+                )}
+                
+              </div>
+            </div>
           </div>
         </div>
       </div>

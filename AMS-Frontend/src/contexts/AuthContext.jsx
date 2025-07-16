@@ -12,10 +12,11 @@ export const useAuth = () => {
   return context
 }
 
-// Mock users for testing
-const mockUsers = {
-  "student@college.edu": {
+// ✅ Mock users using loginId (ID-based login)
+const mockUsers = [
+  {
     id: 1,
+    loginId: "student001",
     email: "student@college.edu",
     password: "demo123",
     role: "student",
@@ -29,8 +30,9 @@ const mockUsers = {
       program: "B.Tech Computer Science",
     },
   },
-  "class.teacher@college.edu": {
+  {
     id: 2,
+    loginId: "classteach01",
     email: "class.teacher@college.edu",
     password: "demo123",
     role: "class_teacher",
@@ -40,8 +42,9 @@ const mockUsers = {
       department: "Computer Science",
     },
   },
-  "subject.teacher@college.edu": {
+  {
     id: 3,
+    loginId: "subjectteach01",
     email: "subject.teacher@college.edu",
     password: "demo123",
     role: "subject_teacher",
@@ -51,21 +54,21 @@ const mockUsers = {
       department: "Computer Science",
     },
   },
-  "admin@college.edu": {
+  {
     id: 4,
+    loginId: "admin01",
     email: "admin@college.edu",
     password: "demo123",
     role: "admin",
     name: "System Admin",
   },
-}
+]
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
-  // Check if user is logged in on app start
   useEffect(() => {
     checkAuthStatus()
   }, [])
@@ -73,7 +76,6 @@ export const AuthProvider = ({ children }) => {
   const checkAuthStatus = async () => {
     try {
       const userData = localStorage.getItem("userData")
-
       if (userData) {
         const parsedUser = JSON.parse(userData)
         setUser(parsedUser)
@@ -89,24 +91,25 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      // Simulate API delay
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate delay
 
-      const { email, password, userType } = credentials
-      const mockUser = mockUsers[email]
+      const { id, password, userType } = credentials
 
-      if (!mockUser || mockUser.password !== password || mockUser.role !== userType) {
+      // ✅ Find user by loginId and role
+      const mockUser = mockUsers.find(
+        (u) => u.loginId === id && u.role === userType
+      )
+
+      if (!mockUser || mockUser.password !== password) {
         return { success: false, error: "Invalid credentials" }
       }
 
-      // Remove password from user data
       const { password: _, ...userWithoutPassword } = mockUser
 
       setUser(userWithoutPassword)
       setIsAuthenticated(true)
       localStorage.setItem("userData", JSON.stringify(userWithoutPassword))
 
-      // Determine redirect URL based on role
       const redirectUrls = {
         student: "/student/dashboard",
         class_teacher: "/class-teacher/dashboard",
@@ -127,7 +130,6 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 500))
     } catch (error) {
       console.error("Logout error:", error)

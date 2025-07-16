@@ -185,7 +185,7 @@ const ClassDetail = () => {
             </div>
             <div className="flex gap-2">
               <button
-                onClick={generateQRCode}
+                   onClick={() => navigate("/subject-teacher/GenerateQR")}
                 className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 flex items-center gap-2"
               >
                 📱 Generate QR
