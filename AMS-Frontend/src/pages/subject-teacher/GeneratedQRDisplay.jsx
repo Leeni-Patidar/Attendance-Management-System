@@ -120,14 +120,6 @@ export default function GeneratedQRDisplay() {
               </p>
             </div>
 
-            {/* <div className="flex flex-col sm:flex-row gap-2 mt-6">
-              <button className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">
-                Download QR
-              </button>
-              <button className="flex-1 bg-transparent border border-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-100">
-                Share QR
-              </button> 
-            </div>*/}
           </div>
         </div>
       </div>

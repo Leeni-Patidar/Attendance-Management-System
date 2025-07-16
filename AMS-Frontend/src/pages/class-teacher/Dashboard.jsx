@@ -245,12 +245,6 @@ const ClassTeacherDashboard = () => {
               <h1 className="text-xl font-semibold text-gray-900">Class Teacher Dashboard</h1>
             </div>
             <div className="flex items-center gap-4">
-              {/* <button className="relative p-2 text-gray-400 hover:text-gray-500">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-5 5v-5z" />
-              </svg>
-              <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-400"></span>
-            </button> */}
               <div className="text-right hidden sm:block" onClick={() => navigate("/class-teacher/profile")}>
                 <p className="text-sm font-medium text-gray-900">{user?.name}</p>
                 <p className="text-xs text-gray-500">{user?.teacherInfo?.employeeId}</p>
@@ -286,24 +280,7 @@ const ClassTeacherDashboard = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Stats and Actions */}
           <div className="lg:col-span-1 space-y-6">
-            {/* Statistics */}
-            {/* <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Attendance Statistics</h3>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Good Attendance (≥75%)</span>
-                  <span className="text-lg font-bold text-green-600">{stats.goodAttendance}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Average (60-74%)</span>
-                  <span className="text-lg font-bold text-yellow-600">{stats.averageAttendance}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Low Attendance (&lt;60%)</span>
-                  <span className="text-lg font-bold text-red-600">{stats.lowAttendance}</span>
-                </div>
-              </div>
-            </div> */}
+
 
             {/* Pending Requests */}
             <div className="bg-white rounded-lg shadow-md p-6">
@@ -443,8 +420,8 @@ const ClassTeacherDashboard = () => {
         </div>
       </div>
         </div>
-      // </div>
-    // </div>
+       </div>
+    
   )
 }
 

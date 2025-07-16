@@ -1,27 +1,34 @@
 "use client"
 
+// Importing necessary React module
 import React from "react"
 
+// Creating a class-based component to catch rendering errors in child components
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props)
+    // State tracks whether an error has occurred
     this.state = { hasError: false, error: null }
   }
 
+  // Update state so the next render shows fallback UI
   static getDerivedStateFromError(error) {
     return { hasError: true, error }
   }
 
+  // Log error information for debugging
   componentDidCatch(error, errorInfo) {
     console.error("Application Error:", error, errorInfo)
   }
 
   render() {
+    // If an error occurred, show fallback UI with options to retry or refresh
     if (this.state.hasError) {
       return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50">
           <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-6">
             <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4">
+              {/* Error icon */}
               <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
@@ -31,17 +38,20 @@ class ErrorBoundary extends React.Component {
                 />
               </svg>
             </div>
+            {/* Error message */}
             <h1 className="text-xl font-semibold text-gray-900 text-center mb-2">Something went wrong</h1>
             <p className="text-gray-600 text-center mb-4">
               We're sorry, but something unexpected happened. Please try refreshing the page.
             </p>
             <div className="flex gap-3">
+              {/* Reloads the page */}
               <button
                 onClick={() => window.location.reload()}
                 className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
               >
                 Refresh Page
               </button>
+              {/* Resets error boundary state */}
               <button
                 onClick={() => this.setState({ hasError: false, error: null })}
                 className="flex-1 bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors"
@@ -54,8 +64,10 @@ class ErrorBoundary extends React.Component {
       )
     }
 
+    // If no error, render child components
     return this.props.children
   }
 }
 
+// Exporting the component for reuse
 export default ErrorBoundary

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 
-const StudentDetails = ({ studentId, onBack }) => {
+const StudentDetail = ({ studentId, onBack }) => {
   const [student, setStudent] = useState(null)
   const [subjects, setSubjects] = useState([])
   const [isEditing, setIsEditing] = useState(false)
@@ -47,7 +47,7 @@ const StudentDetails = ({ studentId, onBack }) => {
           },
           {
             id: 2,
-            type: "Personal Details",
+            type: "Personal Detail",
             subject: "Contact Information",
             reason: "Phone number update",
             description: "Need to update my contact number from old to new.",
@@ -151,7 +151,7 @@ const StudentDetails = ({ studentId, onBack }) => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading student details...</p>
+          <p className="mt-4 text-gray-600">Loading student Detail...</p>
         </div>
       </div>
     )
@@ -182,7 +182,7 @@ const StudentDetails = ({ studentId, onBack }) => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
-              <h1 className="text-xl font-semibold text-gray-900">Student Details</h1>
+              <h1 className="text-xl font-semibold text-gray-900">Student Detail</h1>
             </div>
             <div className="flex items-center gap-2">
               {isEditing ? (
@@ -205,7 +205,7 @@ const StudentDetails = ({ studentId, onBack }) => {
                   onClick={() => setIsEditing(true)}
                   className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                 >
-                  Edit Details
+                  Edit Detail
                 </button>
               )}
             </div>
@@ -339,9 +339,9 @@ const StudentDetails = ({ studentId, onBack }) => {
 
           {/* Attendance and Requests */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Attendance Details */}
+            {/* Attendance Detail */}
             <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Attendance Details</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Attendance Detail</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {subjects.map((subject) => {
                   const attendance = student.subjects[subject.code]
@@ -542,4 +542,4 @@ const StudentDetails = ({ studentId, onBack }) => {
   )
 }
 
-export default StudentDetails
+export default StudentDetail

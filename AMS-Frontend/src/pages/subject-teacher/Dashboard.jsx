@@ -272,19 +272,7 @@ const SubjectTeacherDashboard = () => {
             <div className="bg-white rounded-lg shadow-md p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Action Links</h3>
               <div className="space-y-2">
-                {/* <button
-                onClick={() => navigate("/subject-teacher/ManageStudents")}
-                className="w-full text-left px-3 py-2 text-sm bg-green-50 text-green-700 rounded hover:bg-green-100"
-              >
-                👥 Manage Students
-              </button> */}
-                {/* <button
-                onClick={() => navigate("/subject-teacher/ViewReports")}
-                className="w-full text-left px-3 py-2 text-sm bg-blue-50 text-blue-700 rounded hover:bg-blue-100"
-              >
-                📊 View Reports
-              </button> */}
-                <button
+                  <button
                   onClick={() => navigate("/subject-teacher/ViewSchedule")}
                   className="w-full text-left px-3 py-2 text-sm bg-purple-50 text-purple-700 rounded hover:bg-purple-100"
                 >
@@ -302,13 +290,7 @@ const SubjectTeacherDashboard = () => {
                 >
                   👤 Profile Settings
                 </button>
-                {/* <button
-                onClick={() => navigate("/subject-teacher/AttendanceAnalytics")}
-                className="w-full text-left px-3 py-2 text-sm bg-pink-50 text-pink-700 rounded hover:bg-pink-100"
-              >
-                📈 Attendance Analytics
-              </button> */}
-              </div>
+                </div>
             </div>
 
             {/* Active QR Codes */}

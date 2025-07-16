@@ -254,32 +254,7 @@ const DownloadReport = ({ onBack, students = [], subjects = [] }) => {
                     Cancel
                   </button>
                 </div>
-
-                {/* Additional Options */}
-                {/* <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">Additional Options</label>
-                  <div className="space-y-3">
-                    <label className="flex items-center">
-                      <input
-                        type="checkbox"
-                        checked={reportConfig.includeGraphs}
-                        onChange={(e) => handleConfigChange("includeGraphs", e.target.checked)}
-                        className="mr-2"
-                      />
-                      Include Charts and Graphs
-                    </label>
-                    <label className="flex items-center">
-                      <input
-                        type="checkbox"
-                        checked={reportConfig.includeStudentPhotos}
-                        onChange={(e) => handleConfigChange("includeStudentPhotos", e.target.checked)}
-                        className="mr-2"
-                      />
-                      Include Student Photos
-                    </label>
-                  </div>
-                </div> */}
-              </div>
+                </div>
             </div>
           </div>
         </div>

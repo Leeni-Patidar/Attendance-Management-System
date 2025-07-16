@@ -133,7 +133,7 @@ const timetableData = {
   ],
 };
 
-const Timetable = () => {
+const StudentTimetable = () => {
   const getTypeColor = (type) => {
     switch (type) {
       case "Lecture":
@@ -321,4 +321,4 @@ const Timetable = () => {
     </div>
   );
 }
-export default Timetable;
+export default StudentTimetable;

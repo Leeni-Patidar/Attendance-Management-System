@@ -116,16 +116,7 @@ const handleChangePassword = (e) => {
                 <p className="text-sm text-gray-500">View your profile information</p>
               </div>
             </div>
-
-            {/* <button
-              onClick={() => setIsEditing(!isEditing)}
-              className={`px-4 py-2 rounded-md ${
-                isEditing ? "bg-gray-200 text-gray-800 hover:bg-gray-300" : "bg-blue-600 text-white hover:bg-blue-700"
-              }`}
-            >
-              {isEditing ? "Cancel" : "Edit Profile"}
-            </button> */}
-          </div>
+           </div>
         </div>
       </header>
 
@@ -401,17 +392,6 @@ const handleChangePassword = (e) => {
                 )}
                 </div>
               </div>
-              {/* Save Button
-              {isEditing && (
-                <div className="mt-8 flex justify-end">
-                  <button
-                    onClick={handleSave}
-                    className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
-                  >
-                    Save Changes
-                  </button>
-                </div>
-              )} */}
             </div>
           </div>
         </div>

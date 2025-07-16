@@ -5,50 +5,60 @@ import { Toaster } from "react-hot-toast"
 // Import pages
 import LoginPage from "./pages/LoginPage"
 
+
 // Student pages
 import StudentDashboard from "./pages/student/Dashboard"
-import StudentSubjectDetail from "./pages/student/SubjectDetail"
+import StudentProfile from "./pages/student/Profile"
 import StudentQRScan from "./pages/student/QRScan"
 import StudentRequests from "./pages/student/Requests"
-import StudentProfile from "./pages/student/Profile"
-import TimeTable from "./pages/student/TimeTable"
+import StudentSubjectDetail from "./pages/student/SubjectDetail"
+import StudentTimetable from "./pages/student/TimeTable"
+import ViewCalendar from "./pages/student/viewCalendar"
+
 
 // Class Teacher pages
-import ClassTeacherDashboard from "./pages/class-teacher/Dashboard"
-import ClassTeacherRequests from "./pages/class-teacher/Requests"
-import ClassTeacherProfile from "./pages/class-teacher/Profile"
 import AddStudent from "./pages/class-teacher/addStudent"
+import ClassTeacherDashboard from "./pages/class-teacher/Dashboard"
 import DownloadReports from "./pages/class-teacher/downloadReport"
-import StudentDetails from "./pages/class-teacher/studentDetail"
+import ClassTeacherProfile from "./pages/class-teacher/Profile"
+import ClassTeacherRequests from "./pages/class-teacher/Requests"
+import StudentDetail from "./pages/class-teacher/StudentDetails"
 import ViewCalendar from "./pages/class-teacher/viewCalendar"
 
+
 // Subject Teacher pages
-import SubjectTeacherDashboard from "./pages/subject-teacher/Dashboard"
-import ClassDetail from "./pages/subject-teacher/ClassDetail"
-import SubjectTeacherProfile from "./pages/subject-teacher/Profile"
 import ArrangementClasses from "./pages/subject-teacher/ArrangementClasses"
-// import AttendanceAnalytics from "./pages/subject-teacher/AttendanceAnalytics"
-// import ManageStudents from "./pages/subject-teacher/ManageStudent"
-import MyClasses from "./pages/subject-teacher/MyClasses"
-// import ViewReports from "./pages/subject-teacher/ViewReports"
-import ViewSchedule from "./pages/subject-teacher/ViewSchedule"
-import QRHistory from "./pages/subject-teacher/QRHistory"
+import ClassDetail from "./pages/subject-teacher/ClassDetail"
+import SubjectTeacherDashboard from "./pages/subject-teacher/Dashboard"
 import GenerateQR from "./pages/subject-teacher/GenerateQR"
+import GeneratedQRDisplay from "./pages/subject-teacher/GeneratedQRDisplay"
+import MyClasses from "./pages/subject-teacher/MyClasses"
+import SubjectTeacherProfile from "./pages/subject-teacher/Profile"
+import QRHistory from "./pages/subject-teacher/QRHistory"
 import RecentActivity from "./pages/subject-teacher/RecentActivity"
-import GeneratedQRDisplay from "./pages/subject-teacher/Generated-qr-display"
+import ViewCalendar from "./pages/subject-teacher/viewCalendar"
+import ViewSchedule from "./pages/subject-teacher/ViewSchedule"
 
 
 // Admin pages
-import AdminDashboard from "./pages/admin/Dashboard"
-// import Profile from "./pages/admin/Profile"
-// import DownloadReport from "./pages/admin/downloadReport"
-// import ClassDetail from "./pages/admin/ClassDetail"
-// import RecentActivity from "./pages/admin/RecentActivity"
-// import ViewCalendar from "./pages/admin/viewCalendar"
+import AssignClassTeacher from"./pages/admin/AssignClassTeacher"
+import AssignSubjectTeacher from"./pages/admin/AssignSubjectTeacher"
+import ClassDetail from "./pages/admin/ClassDetail"
+import ClassTimeTable from "./pages/admin/ClassTimeTable"
+import Dashboard from "./pages/admin/Dashboard"
+import DownloadReport from "./pages/admin/DownloadReport"
+import ManageArrangement from "./pages/admin/ManageArrangement"
+import Profile from "./pages/admin/Profile"
+import RecentActivity from "./pages/admin/RecentActivity"
+import TeacherDetail from "./pages/admin/TeacherDetail"
+import TeacherTimeTable from "./pages/admin/TeacherTimeTable"
+import ViewCalendar from "./pages/admin/viewCalendar"
+
 
 // Shared pages
 import NotFound from "./pages/NotFound"
 import Unauthorized from "./pages/Unauthorized"
+
 
 // Import components
 import ProtectedRoute from "./components/ProtectedRoute"
@@ -78,15 +88,15 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              <Route
-                path="/student/subject/:id"
+               <Route
+                path="/student/profile"
                 element={
                   <ProtectedRoute allowedRoles={["student"]}>
-                    <StudentSubjectDetail />
+                    <StudentProfile />
                   </ProtectedRoute>
                 }
               />
-              <Route
+               <Route
                 path="/student/qr-scan"
                 element={
                   <ProtectedRoute allowedRoles={["student"]}>
@@ -103,10 +113,10 @@ function App() {
                 }
               />
               <Route
-                path="/student/profile"
+                path="/student/subject/:id"
                 element={
                   <ProtectedRoute allowedRoles={["student"]}>
-                    <StudentProfile />
+                    <StudentSubjectDetail />
                   </ProtectedRoute>
                 }
               />
@@ -114,49 +124,35 @@ function App() {
                 path="/student/timeTable"
                 element={
                   <ProtectedRoute allowedRoles={["student"]}>
-                    <TimeTable />
+                    <StudentTimetable />
+                  </ProtectedRoute>
+                }
+              />
+               <Route
+                path="/student/viewCalendar"
+                element={
+                  <ProtectedRoute allowedRoles={["class_teacher"]}>
+                    <ViewCalendar/>
                   </ProtectedRoute>
                 }
               />
 
+
               {/* Class Teacher Routes */}
-              <Route
-                path="/class-teacher/dashboard"
-                element={
-                  <ProtectedRoute allowedRoles={["class_teacher"]}>
-                    <ClassTeacherDashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/class-teacher/requests"
-                element={
-                  <ProtectedRoute allowedRoles={["class_teacher"]}>
-                    <ClassTeacherRequests />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/class-teacher/profile"
-                element={
-                  <ProtectedRoute allowedRoles={["class_teacher"]}>
-                    <ClassTeacherProfile />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/class-teacher/students-detail"
-                element={
-                  <ProtectedRoute allowedRoles={["class_teacher"]}>
-                    <StudentDetails />
-                  </ProtectedRoute>
-                }
-              />
+
               <Route
                 path="/class-teacher/addStudent"
                 element={
                   <ProtectedRoute allowedRoles={["class_teacher"]}>
                     <AddStudent />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/class-teacher/dashboard"
+                element={
+                  <ProtectedRoute allowedRoles={["class_teacher"]}>
+                    <ClassTeacherDashboard />
                   </ProtectedRoute>
                 }
               />
@@ -168,11 +164,27 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              <Route
-                path="/class-teacher/viewCalendar"
+               <Route
+                path="/class-teacher/profile"
                 element={
                   <ProtectedRoute allowedRoles={["class_teacher"]}>
-                    <ViewCalendar/>
+                    <ClassTeacherProfile />
+                  </ProtectedRoute>
+                }
+              />
+               <Route
+                path="/class-teacher/requests"
+                element={
+                  <ProtectedRoute allowedRoles={["class_teacher"]}>
+                    <ClassTeacherRequests />
+                  </ProtectedRoute>
+                }
+              />
+             <Route
+                path="/class-teacher/students-detail"
+                element={
+                  <ProtectedRoute allowedRoles={["class_teacher"]}>
+                    <StudentDetail />
                   </ProtectedRoute>
                 }
               />
@@ -180,18 +192,26 @@ function App() {
                 path="/class-teacher/timeTable"
                 element={
                   <ProtectedRoute allowedRoles={["class_teacher"]}>
-                    <TimeTable />
+                    <StudentTimetable />   {/* student timetable from student components  */}
+                  </ProtectedRoute>
+                }
+              />
+               <Route
+                path="/class-teacher/viewCalendar"
+                element={
+                  <ProtectedRoute allowedRoles={["class_teacher"]}>
+                    <ViewCalendar/>
                   </ProtectedRoute>
                 }
               />
 
 
               {/* Subject Teacher Routes */}
-              <Route
-                path="/subject-teacher/dashboard"
+               <Route
+                path="/subject-teacher/arrangementClasses"
                 element={
                   <ProtectedRoute allowedRoles={["subject_teacher"]}>
-                    <SubjectTeacherDashboard />
+                    <ArrangementClasses />
                   </ProtectedRoute>
                 }
               />
@@ -204,10 +224,34 @@ function App() {
                 }
               />
               <Route
-                path="/subject-teacher/qr-history"
+                path="/subject-teacher/dashboard"
                 element={
                   <ProtectedRoute allowedRoles={["subject_teacher"]}>
-                    <QRHistory />
+                    <SubjectTeacherDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/subject-teacher/GenerateQR"
+                element={
+                  <ProtectedRoute allowedRoles={["subject_teacher"]}>
+                    <GeneratedQRDisplay/>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/subject-teacher/GenerateQR"
+                element={
+                  <ProtectedRoute allowedRoles={["subject_teacher"]}>
+                    <GenerateQR />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/subject-teacher/MyClasses"
+                element={
+                  <ProtectedRoute allowedRoles={["subject_teacher"]}>
+                    <MyClasses />
                   </ProtectedRoute>
                 }
               />
@@ -219,43 +263,27 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              {/* <Route
-                path="/subject-teacher/reports"
-                element={
-                  <ProtectedRoute allowedRoles={["subject_teacher"]}>
-                    <ViewReports />
-                  </ProtectedRoute>
-                }
-              /> */}
               <Route
-                path="/subject-teacher/arrangementClasses"
+                path="/subject-teacher/qr-history"
                 element={
                   <ProtectedRoute allowedRoles={["subject_teacher"]}>
-                    <ArrangementClasses />
+                    <QRHistory />
                   </ProtectedRoute>
                 }
               />
-              {/* <Route
-                path="/subject-teacher/AttendanceAnalytics"
+               <Route
+                path="/subject-teacher/RecentActivity"
                 element={
                   <ProtectedRoute allowedRoles={["subject_teacher"]}>
-                    <AttendanceAnalytics />
+                    <RecentActivity />
                   </ProtectedRoute>
                 }
-              /> */}
-              {/* <Route
-                path="/subject-teacher/ManageStudents"
+              />
+               <Route
+                path="/subject-teacher/ViewCalendar"
                 element={
                   <ProtectedRoute allowedRoles={["subject_teacher"]}>
-                    <ManageStudents/>
-                  </ProtectedRoute>
-                }
-              /> */}
-              <Route
-                path="/subject-teacher/MyClasses"
-                element={
-                  <ProtectedRoute allowedRoles={["subject_teacher"]}>
-                    <MyClasses />
+                    <ViewCalendar />
                   </ProtectedRoute>
                 }
               />
@@ -267,94 +295,112 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-               <Route
-                path="/subject-teacher/GenerateQR"
-                element={
-                  <ProtectedRoute allowedRoles={["subject_teacher"]}>
-                    <GenerateQR />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/subject-teacher/RecentActivity"
-                element={
-                  <ProtectedRoute allowedRoles={["subject_teacher"]}>
-                    <RecentActivity />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/subject-teacher/generated-qr-display"
-                element={
-                  <ProtectedRoute allowedRoles={["subject_teacher"]}>
-                    <GeneratedQRDisplay />
-                  </ProtectedRoute>
-                }
-              />
+
 
               {/* Admin Routes */}
+              
+               <Route
+                path="/admin/AssignClassTeacher"
+                element={
+                  <ProtectedRoute allowedRoles={["admin"]}>
+                    <AssignClassTeacher />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/AssignSubjectTeacher"
+                element={
+                  <ProtectedRoute allowedRoles={["admin"]}>
+                    <AssignSubjectTeacher />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/ClassDetail"
+                element={
+                  <ProtectedRoute allowedRoles={["admin"]}>
+                    <ClassDetail />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/ClassTimeTable"
+                element={
+                  <ProtectedRoute allowedRoles={["admin"]}>
+                    <ClassTimeTable/>
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path="/admin/dashboard"
                 element={
                   <ProtectedRoute allowedRoles={["admin"]}>
-                    <AdminDashboard />
+                    <Dashboard />
                   </ProtectedRoute>
                 }
               />
-              {/* <Route
-                path="/admin/profile"
-                element={
-                  <ProtectedRoute allowedRoles={["admin"]}>
-                    <Profile />
-                  </ProtectedRoute>
-                }
-              /> */}
-              {/* <Route
+              <Route
                 path="/admin/downloadReport"
                 element={
                   <ProtectedRoute allowedRoles={["admin"]}>
-                    <DownloadReports/>
+                    <DownloadReport/>
                   </ProtectedRoute>
                 }
-              /> */}
-              {/* <Route
+              />
+               <Route
+                path="/admin/manageArrangement"
+                element={
+                  <ProtectedRoute allowedRoles={["admin"]}>
+                    <ManageArrangement/>
+                  </ProtectedRoute>
+                }
+              />
+               <Route
+                path="/admin/profile"
+                element={
+                  <ProtectedRoute allowedRoles={["admin"]}>
+                    <Profile/>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path="/admin/RecentActivity"
                 element={
                   <ProtectedRoute allowedRoles={["admin"]}>
                     <RecentActivity/>
                   </ProtectedRoute>
                 }
-              /> */}
-              {/* <Route
+              />
+               <Route
                 path="/admin/TeacherDetail"
                 element={
                   <ProtectedRoute allowedRoles={["admin"]}>
-                    < />
+                    <TeacherDetail/>
                   </ProtectedRoute>
                 }
               />
               <Route
-                path="/admin/dashboard"
+                path="/admin/TeacherTimeTable"
                 element={
                   <ProtectedRoute allowedRoles={["admin"]}>
-                    <AdminDashboard />
+                    <TeacherTimeTable />
                   </ProtectedRoute>
                 }
-              /> */}
-              {/* <Route
-                path="/admin/viewschedule"
+              />
+              <Route
+                path="/admin/TeacherDetail"
                 element={
                   <ProtectedRoute allowedRoles={["admin"]}>
-                    <ViewCalendar/>
+                    <ViewCalendar />
                   </ProtectedRoute>
                 }
-              /> */}
+              />
 
-             
 
               {/* Catch all route */}
               <Route path="*" element={<NotFound />} />
             </Routes>
+
 
             {/* Global components */}
             <Toaster

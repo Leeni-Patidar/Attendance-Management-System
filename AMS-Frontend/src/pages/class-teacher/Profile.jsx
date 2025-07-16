@@ -96,34 +96,10 @@ const Profile = () => {
               </button>
               <div>
                 <h1 className="text-xl font-semibold text-gray-900">My Profile</h1>
-                {/* <p className="text-sm text-gray-500">Manage your personal and professional information</p> */}
+               
               </div>
             </div>
-            {/* <div className="flex gap-2">
-              {isEditing ? (
-                <>
-                  <button
-                    onClick={() => setIsEditing(false)}
-                    className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleSave}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                  >
-                    Save Changes
-                  </button>
-                </>
-              ) : (
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                >
-                  Edit Profile
-                </button>
-              )}
-            </div> */}
+           
           </div>
         </div>
       </header>
@@ -165,32 +141,7 @@ const Profile = () => {
                 </div>
               </div>
             </div>
-
-            {/* Statistics */}
-            {/* <div className="bg-white rounded-lg shadow-md p-6 mt-6">
-              <h4 className="text-lg font-semibold text-gray-900 mb-4">Statistics</h4>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Total Classes</span>
-                  <span className="text-lg font-bold text-blue-600">{profile.statistics?.totalClasses}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Avg. Attendance</span>
-                  <span className="text-lg font-bold text-green-600">{profile.statistics?.averageAttendance}%</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Requests Handled</span>
-                  <span className="text-lg font-bold text-purple-600">{profile.statistics?.requestsHandled}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Low Attendance</span>
-                  <span className="text-lg font-bold text-red-600">
-                    {profile.statistics?.studentsWithLowAttendance}
-                  </span>
-                </div>
-              </div>
-            </div> */}
-          </div>
+        </div>
 
           {/* Profile Details */}
           <div className="lg:col-span-2 space-y-6">
