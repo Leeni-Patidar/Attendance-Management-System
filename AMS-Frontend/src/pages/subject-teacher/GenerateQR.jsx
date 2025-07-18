@@ -78,7 +78,7 @@ const GenerateQR = () => {
       }
 
       setLoading(false)
-      navigate("/subject-teacher/generated-qr-display", { state: { qrData: newQR } })
+      navigate("/subject-teacher/GenerateQRDisplay", { state: { qrData: newQR } })
 
       // Reset form
       setSelectedClass("")

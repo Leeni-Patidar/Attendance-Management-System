@@ -13,7 +13,7 @@ export default function GeneratedQRDisplay() {
   useEffect(() => {
     if (!qrData) {
       // Redirect if no QR data is available (e.g., direct access)
-      navigate("/subject-teacher/generate-qr")
+      navigate("/subject-teacher/GenerateQR")
       return
     }
 

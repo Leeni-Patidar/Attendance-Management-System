@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ViewCalendar = () => {
+const Layout = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const ViewCalendar = () => {
   )
 }
 
-export default ViewCalendar
+export default Layout

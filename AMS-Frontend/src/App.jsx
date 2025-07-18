@@ -2,9 +2,13 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { AuthProvider } from "./contexts/AuthContext"
 import { Toaster } from "react-hot-toast"
 
+
 // Import pages
 import LoginPage from "./pages/LoginPage"
 
+// Common pages
+import ViewCalendar from "./pages/commonpages/ViewCalendar"
+import Layout from "./pages/commonpages/Layout"
 
 // Student pages
 import StudentDashboard from "./pages/student/Dashboard"
@@ -13,7 +17,6 @@ import StudentQRScan from "./pages/student/QRScan"
 import StudentRequests from "./pages/student/Requests"
 import StudentSubjectDetail from "./pages/student/SubjectDetail"
 import StudentTimetable from "./pages/student/TimeTable"
-import ViewCalendar from "./pages/student/viewCalendar"
 
 
 // Class Teacher pages
@@ -23,7 +26,6 @@ import DownloadReports from "./pages/class-teacher/downloadReport"
 import ClassTeacherProfile from "./pages/class-teacher/Profile"
 import ClassTeacherRequests from "./pages/class-teacher/Requests"
 import StudentDetail from "./pages/class-teacher/StudentDetails"
-import ViewCalendar from "./pages/class-teacher/viewCalendar"
 
 
 // Subject Teacher pages
@@ -36,23 +38,21 @@ import MyClasses from "./pages/subject-teacher/MyClasses"
 import SubjectTeacherProfile from "./pages/subject-teacher/Profile"
 import QRHistory from "./pages/subject-teacher/QRHistory"
 import RecentActivity from "./pages/subject-teacher/RecentActivity"
-import ViewCalendar from "./pages/subject-teacher/viewCalendar"
 import ViewSchedule from "./pages/subject-teacher/ViewSchedule"
 
 
 // Admin pages
 import AssignClassTeacher from"./pages/admin/AssignClassTeacher"
 import AssignSubjectTeacher from"./pages/admin/AssignSubjectTeacher"
-import ClassDetail from "./pages/admin/ClassDetail"
+// import ClassDetail from "./pages/admin/ClassDetail"
 import ClassTimeTable from "./pages/admin/ClassTimeTable"
 import Dashboard from "./pages/admin/Dashboard"
 import DownloadReport from "./pages/admin/DownloadReport"
 import ManageArrangement from "./pages/admin/ManageArrangement"
 import Profile from "./pages/admin/Profile"
-import RecentActivity from "./pages/admin/RecentActivity"
+// import RecentActivity from "./pages/admin/RecentActivity"
 import TeacherDetail from "./pages/admin/TeacherDetail"
 import TeacherTimeTable from "./pages/admin/TeacherTimeTable"
-import ViewCalendar from "./pages/admin/viewCalendar"
 
 
 // Shared pages
@@ -232,7 +232,7 @@ function App() {
                 }
               />
               <Route
-                path="/subject-teacher/GenerateQR"
+                path="/subject-teacher/GenerateQRDisplay"
                 element={
                   <ProtectedRoute allowedRoles={["subject_teacher"]}>
                     <GeneratedQRDisplay/>

@@ -290,6 +290,12 @@ const SubjectTeacherDashboard = () => {
                 >
                   👤 Profile Settings
                 </button>
+                <button
+                  onClick={() => navigate("/subject-teacher/viewCalendar")}
+                  className="w-full text-left px-3 py-2 text-sm bg-indigo-50 text-indigo-700 rounded hover:bg-indigo-100"
+                >
+                  ⚙️ Calendar
+                </button>
                 </div>
             </div>
 
