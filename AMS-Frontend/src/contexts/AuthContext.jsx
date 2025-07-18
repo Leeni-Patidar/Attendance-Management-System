@@ -60,7 +60,7 @@ const mockUsers = [
     email: "admin@college.edu",
     password: "demo123",
     role: "admin",
-    name: "System Admin",
+    name: "Admin",
   },
 ]
 
