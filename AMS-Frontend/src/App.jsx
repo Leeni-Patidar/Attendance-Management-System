@@ -19,6 +19,7 @@ import StudentSubjectDetail from "./pages/student/SubjectDetail"
 import StudentTimetable from "./pages/student/TimeTable"
 
 
+
 // Class Teacher pages
 import AddStudent from "./pages/class-teacher/addStudent"
 import ClassTeacherDashboard from "./pages/class-teacher/Dashboard"
@@ -37,7 +38,7 @@ import GeneratedQRDisplay from "./pages/subject-teacher/GeneratedQRDisplay"
 import MyClasses from "./pages/subject-teacher/MyClasses"
 import SubjectTeacherProfile from "./pages/subject-teacher/Profile"
 import QRHistory from "./pages/subject-teacher/QRHistory"
-import RecentActivity from "./pages/subject-teacher/RecentActivity"
+// import RecentActivity from "./pages/subject-teacher/RecentActivity"
 import ViewSchedule from "./pages/subject-teacher/ViewSchedule"
 
 
