@@ -137,7 +137,7 @@ export const AuthProvider = ({ children }) => {
       setUser(null)
       setIsAuthenticated(false)
       localStorage.removeItem("userData")
-      window.location.href = "/login"
+      window.location.href = "/"
     }
   }
 

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
-const ClassDetail = () => {
+const EditAttendance = () => {
   const navigate = useNavigate()
   const { id } = useParams()
   const [classData, setClassData] = useState({})
@@ -515,4 +515,4 @@ const ClassDetail = () => {
   )
 }
 
-export default ClassDetail
+export default EditAttendance

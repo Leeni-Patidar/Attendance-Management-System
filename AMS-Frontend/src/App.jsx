@@ -9,6 +9,8 @@ import LoginPage from "./pages/LoginPage"
 // Common pages
 import ViewCalendar from "./pages/commonpages/ViewCalendar"
 import Layout from "./pages/commonpages/Layout"
+import ClassDetails from "./pages/commonpages/ClassDetails"
+import StudentDetail from "./pages/commonpages/StudentDetails"
 
 // Student pages
 import StudentDashboard from "./pages/student/Dashboard"
@@ -26,12 +28,12 @@ import ClassTeacherDashboard from "./pages/class-teacher/Dashboard"
 import DownloadReports from "./pages/class-teacher/downloadReport"
 import ClassTeacherProfile from "./pages/class-teacher/Profile"
 import ClassTeacherRequests from "./pages/class-teacher/Requests"
-import StudentDetail from "./pages/class-teacher/StudentDetails"
+import EditStudentDetail from "./pages/class-teacher/EditStudentDetail"
 
 
 // Subject Teacher pages
 import ArrangementClasses from "./pages/subject-teacher/ArrangementClasses"
-import ClassDetail from "./pages/subject-teacher/ClassDetail"
+import EditAttendance from "./pages/subject-teacher/EditAttendance"
 import SubjectTeacherDashboard from "./pages/subject-teacher/Dashboard"
 import GenerateQR from "./pages/subject-teacher/GenerateQR"
 import GeneratedQRDisplay from "./pages/subject-teacher/GeneratedQRDisplay"
@@ -45,13 +47,12 @@ import ViewSchedule from "./pages/subject-teacher/ViewSchedule"
 // Admin pages
 import AssignClassTeacher from"./pages/admin/AssignClassTeacher"
 import AssignSubjectTeacher from"./pages/admin/AssignSubjectTeacher"
-// import ClassDetail from "./pages/admin/ClassDetail"
 import ClassTimeTable from "./pages/admin/ClassTimeTable"
 import Dashboard from "./pages/admin/Dashboard"
 import DownloadReport from "./pages/admin/DownloadReport"
 import ManageArrangement from "./pages/admin/ManageArrangement"
-import Profile from "./pages/admin/Profile"
-// import RecentActivity from "./pages/admin/RecentActivity"
+import AdminProfile from "./pages/admin/Profile"
+import AdminRecentActivity from "./pages/admin/RecentActivity"
 import TeacherDetail from "./pages/admin/TeacherDetail"
 import TeacherTimeTable from "./pages/admin/TeacherTimeTable"
 
@@ -69,6 +70,7 @@ import ErrorBoundary from "./components/ErrorBoundary"
 import "./App.css"
 
 
+
 function App() {
   return (
     <ErrorBoundary>
@@ -77,7 +79,7 @@ function App() {
           <div className="App">
             <Routes>
               {/* Public Routes */}
-              <Route path="/login" element={<LoginPage />} />
+              <Route path="/" element={<LoginPage />} />
               <Route path="/unauthorized" element={<Unauthorized />} />
 
               {/* Student Routes */}
@@ -158,6 +160,22 @@ function App() {
                 }
               />
               <Route
+                path="/class-teacher/edit-student-detail"
+                element={
+                  <ProtectedRoute allowedRoles={["class_teacher"]}>
+                    <EditStudentDetail />
+                  </ProtectedRoute>
+                }
+              />
+               <Route
+                path="/class-teacher/class/:id"
+                element={
+                  <ProtectedRoute allowedRoles={["class_teacher"]}>
+                    <ClassDetails />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path="/class-teacher/downloadReports"
                 element={
                   <ProtectedRoute allowedRoles={["class_teacher"]}>
@@ -216,11 +234,19 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              <Route
+               <Route
                 path="/subject-teacher/class/:id"
                 element={
                   <ProtectedRoute allowedRoles={["subject_teacher"]}>
-                    <ClassDetail />
+                    <ClassDetails />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/subject-teacher/edit-attendance/:id"
+                element={
+                  <ProtectedRoute allowedRoles={["subject_teacher"]}>
+                    <EditAttendance />
                   </ProtectedRoute>
                 }
               />
@@ -272,11 +298,19 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-               <Route
+               {/* <Route
                 path="/subject-teacher/RecentActivity"
                 element={
                   <ProtectedRoute allowedRoles={["subject_teacher"]}>
                     <RecentActivity />
+                  </ProtectedRoute>
+                }
+              /> */}
+               <Route
+                path="/subject-teacher/students-detail"
+                element={
+                  <ProtectedRoute allowedRoles={["subject_teacher"]}>
+                    <StudentDetail />
                   </ProtectedRoute>
                 }
               />
@@ -317,10 +351,10 @@ function App() {
                 }
               />
               <Route
-                path="/admin/ClassDetail"
+                path="/admin/class/:id"
                 element={
                   <ProtectedRoute allowedRoles={["admin"]}>
-                    <ClassDetail />
+                    <ClassDetails />
                   </ProtectedRoute>
                 }
               />
@@ -360,7 +394,7 @@ function App() {
                 path="/admin/profile"
                 element={
                   <ProtectedRoute allowedRoles={["admin"]}>
-                    <Profile/>
+                    <AdminProfile/>
                   </ProtectedRoute>
                 }
               />
@@ -368,7 +402,15 @@ function App() {
                 path="/admin/RecentActivity"
                 element={
                   <ProtectedRoute allowedRoles={["admin"]}>
-                    <RecentActivity/>
+                    <AdminRecentActivity/>
+                  </ProtectedRoute>
+                }
+              />
+               <Route
+                path="/admin/students-detail"
+                element={
+                  <ProtectedRoute allowedRoles={["admin"]}>
+                    <StudentDetail />
                   </ProtectedRoute>
                 }
               />

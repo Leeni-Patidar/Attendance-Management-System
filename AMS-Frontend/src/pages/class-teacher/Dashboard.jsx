@@ -325,6 +325,10 @@ const ClassTeacherDashboard = () => {
                 <button className="w-full text-left px-3 py-2 text-sm bg-yellow-50 text-yellow-700 rounded hover:bg-yellow-100" onClick={() => navigate("/class-teacher/viewCalendar")}>
                   View Calendar
                 </button>
+                <button className="w-full text-left px-3 py-2 text-sm bg-yellow-50 text-yellow-700 rounded hover:bg-yellow-100" onClick={() => navigate("/class-teacher/class/:id")}>
+                  Class Details
+                </button>
+                
               </div>
             </div>
           </div>

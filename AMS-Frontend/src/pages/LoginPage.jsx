@@ -15,7 +15,7 @@ const LoginPage = () => {
   const [error, setError] = useState("")
 
   if (isAuthenticated) {
-    let redirectUrl = "/login"
+    let redirectUrl = "/"
     if (user?.role === "student") redirectUrl = "/student/dashboard"
     else if (user?.role === "class_teacher") redirectUrl = "/class-teacher/dashboard"
     else if (user?.role === "subject_teacher") redirectUrl = "/subject-teacher/dashboard"

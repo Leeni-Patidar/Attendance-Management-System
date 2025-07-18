@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../../contexts/AuthContext"
 
-const Profile = () => {
+const StudentProfile = () => {
   const navigate = useNavigate()
   const { user, updateUser } = useAuth()
   const [isEditing, setIsEditing] = useState(false)
@@ -400,4 +400,4 @@ const handleChangePassword = (e) => {
   )
 }
 
-export default Profile
+export default StudentProfile

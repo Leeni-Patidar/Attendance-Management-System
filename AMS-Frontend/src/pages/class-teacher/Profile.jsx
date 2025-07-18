@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../../contexts/AuthContext"
 
-const Profile = () => {
+const ClassTeacherProfile = () => {
   const navigate = useNavigate()
   const { user } = useAuth()
   const [profile, setProfile] = useState({})
@@ -408,4 +408,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default ClassTeacherProfile

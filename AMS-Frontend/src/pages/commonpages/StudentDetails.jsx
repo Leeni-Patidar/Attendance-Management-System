@@ -184,31 +184,6 @@ const StudentDetail = ({ studentId, onBack }) => {
               </button>
               <h1 className="text-xl font-semibold text-gray-900">Student Detail</h1>
             </div>
-            <div className="flex items-center gap-2">
-              {isEditing ? (
-                <>
-                  <button
-                    onClick={() => setIsEditing(false)}
-                    className="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleSave}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                  >
-                    Save Changes
-                  </button>
-                </>
-              ) : (
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                >
-                  Edit Detail
-                </button>
-              )}
-            </div>
           </div>
         </div>
       </header>
@@ -388,12 +363,6 @@ const StudentDetail = ({ studentId, onBack }) => {
             <div className="bg-white rounded-lg shadow-md p-6">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">Subject Management</h3>
-                <button
-                  onClick={() => setShowAddSubjectModal(true)}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm"
-                >
-                  Add Subject
-                </button>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -413,12 +382,6 @@ const StudentDetail = ({ studentId, onBack }) => {
                           >
                             {attendance.percentage}%
                           </span>
-                          <button
-                            onClick={() => handleRemoveSubject(subjectCode)}
-                            className="text-red-600 hover:text-red-800 text-sm"
-                          >
-                            Remove
-                          </button>
                         </div>
                       </div>
                       <div className="text-sm text-gray-600">
@@ -432,112 +395,9 @@ const StudentDetail = ({ studentId, onBack }) => {
                 })}
               </div>
             </div>
-
-            {/* Student Requests */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Student Requests</h3>
-              {student.requests && student.requests.length > 0 ? (
-                <div className="space-y-4">
-                  {student.requests.map((request) => (
-                    <div key={request.id} className="border border-gray-200 rounded-lg p-4">
-                      <div className="flex justify-between items-start mb-3">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-2">
-                            <h4 className="font-medium text-gray-900">{request.type}</h4>
-                            <span
-                              className={`px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(request.status)}`}
-                            >
-                              {request.status}
-                            </span>
-                          </div>
-                          <p className="text-sm text-gray-600 mb-1">Subject: {request.subject}</p>
-                          <p className="text-sm text-gray-700 mb-2">{request.description}</p>
-                          <p className="text-xs text-gray-500">Submitted: {request.date}</p>
-                        </div>
-                      </div>
-                      {request.status === "pending" && (
-                        <div className="flex gap-2 pt-3 border-t">
-                          <button
-                            onClick={() => handleRequestAction(request.id, "approved")}
-                            className="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700"
-                          >
-                            Approve
-                          </button>
-                          <button
-                            onClick={() => handleRequestAction(request.id, "rejected")}
-                            className="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700"
-                          >
-                            Reject
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8">
-                  <svg
-                    className="w-12 h-12 text-gray-400 mx-auto mb-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                    />
-                  </svg>
-                  <p className="text-gray-500">No requests from this student</p>
-                </div>
-              )}
-            </div>
           </div>
         </div>
       </div>
-      {/* Add Subject Modal */}
-      {showAddSubjectModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Add Subject</h3>
-              <button onClick={() => setShowAddSubjectModal(false)} className="text-gray-400 hover:text-gray-600">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            <div className="space-y-3">
-              <p className="text-sm text-gray-600 mb-4">Select subjects to add to this student:</p>
-              {availableSubjects
-                .filter((subject) => !student.subjects[subject.code])
-                .map((subject) => (
-                  <div key={subject.code} className="border border-gray-200 rounded-lg p-3">
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <h4 className="font-medium text-gray-900">{subject.code}</h4>
-                        <p className="text-sm text-gray-600">{subject.name}</p>
-                        <p className="text-xs text-gray-500">Teacher: {subject.teacher}</p>
-                      </div>
-                      <button
-                        onClick={() => handleAddSubject(subject.code)}
-                        className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700"
-                      >
-                        Add
-                      </button>
-                    </div>
-                  </div>
-                ))}
-
-              {availableSubjects.filter((subject) => !student.subjects[subject.code]).length === 0 && (
-                <p className="text-gray-500 text-center py-4">All available subjects are already added</p>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
