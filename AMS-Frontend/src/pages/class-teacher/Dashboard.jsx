@@ -3,6 +3,21 @@
 import { useState, useEffect } from "react"
 import { useAuth } from "../../contexts/AuthContext"
 import { useNavigate } from "react-router-dom"
+import {
+  School,
+  GraduationCap,
+  CalendarDays,
+  Download,
+  UserPlus,
+  BookOpen,
+  Upload,
+  Settings,
+  Activity,
+  User,
+  FileText,
+  UserCheck,
+  Info,
+} from "lucide-react"
 
 const ClassTeacherDashboard = () => {
   const { user, logout } = useAuth()
@@ -233,14 +248,15 @@ const ClassTeacherDashboard = () => {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {/* <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="2"
                     d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
                   />
-                </svg>
+                </svg> */}
+                <User size={24} color="white" />
               </div>
               <h1 className="text-xl font-semibold text-gray-900">Class Teacher Dashboard</h1>
             </div>
@@ -314,19 +330,29 @@ const ClassTeacherDashboard = () => {
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
               <div className="space-y-2">
                 <button className="w-full text-left px-3 py-2 text-sm bg-blue-50 text-blue-700 rounded hover:bg-blue-100" onClick={() => navigate("/class-teacher/addStudent")}>
-                  Add New Student
+                  <div className="flex items-center space-x-2">
+                    <UserPlus size={20} /> <span>Add Student</span>
+                  </div>
                 </button>
                 <button className="w-full text-left px-3 py-2 text-sm bg-green-50 text-green-700 rounded hover:bg-green-100" onClick={() => navigate("/class-teacher/downloadReports")}>
-                  Download Report
+                  <div className="flex items-center space-x-2">
+                    <Download size={20} /> <span>Download Report</span>
+                  </div>
                 </button>
                 <button className="w-full text-left px-3 py-2 text-sm bg-purple-50 text-purple-700 rounded hover:bg-purple-100"  onClick={() => navigate("/class-teacher/TimeTable")}>
-                 TimeTable
+                 <div className="flex items-center space-x-2">
+                    <CalendarDays size={20} /> <span>Time Table</span>
+                  </div>
                 </button>
                 <button className="w-full text-left px-3 py-2 text-sm bg-yellow-50 text-yellow-700 rounded hover:bg-yellow-100" onClick={() => navigate("/class-teacher/viewCalendar")}>
-                  View Calendar
+                  <div className="flex items-center space-x-2">
+                    <CalendarDays size={20} /> <span>View Calender</span>
+                  </div>
                 </button>
                 <button className="w-full text-left px-3 py-2 text-sm bg-yellow-50 text-yellow-700 rounded hover:bg-yellow-100" onClick={() => navigate("/class-teacher/class/:id")}>
-                  Class Details
+                  <div className="flex items-center space-x-2">
+                    <FileText size={20} /> <span>Class Details</span>
+                  </div>
                 </button>
                 
               </div>
