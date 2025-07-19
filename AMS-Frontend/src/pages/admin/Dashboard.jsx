@@ -5,7 +5,7 @@ import {
   Users,
   School,
   GraduationCap,
-  Calendar,
+  CalendarDays,
   Download,
   UserPlus,
   BookOpen,
@@ -32,14 +32,14 @@ const AdminDashboard = () => {
     { title: "Total Students", value: "1,234", icon: Users, color: "bg-blue-500" },
     { title: "Total Classes", value: "45", icon: School, color: "bg-green-500" },
     { title: "Total Teachers", value: "89", icon: GraduationCap, color: "bg-purple-500" },
-    { title: "Calendar", value: "", icon: Calendar, color: "bg-orange-500" },
+    { title: "Calendar", value: "", icon: CalendarDays, color: "bg-orange-500" },
   ]
 
   const recentActivities = [
     { id: 1, action: "John Doe marked present", time: "5 minutes ago", icon: Activity },
     { id: 2, action: "New teacher assigned to Class 10A", time: "15 minutes ago", icon: UserPlus },
     { id: 3, action: "Attendance report generated", time: "30 minutes ago", icon: FileText },
-    { id: 4, action: "Timetable updated for Math dept", time: "1 hour ago", icon: Calendar },
+    { id: 4, action: "Timetable updated for Math dept", time: "1 hour ago", icon: CalendarDays },
     { id: 5, action: "Student transferred to Class 9B", time: "2 hours ago", icon: Users },
   ]
 
@@ -107,14 +107,15 @@ const AdminDashboard = () => {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {/* <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="2"
                     d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
                   />
-                </svg>
+                </svg> */}
+                <BookOpen size={18} color="white" />
               </div>
               <h1 className="text-xl font-semibold text-gray-900">Admin Dashboard</h1>
             </div>
@@ -172,37 +173,49 @@ const AdminDashboard = () => {
                   onClick={() => navigate("/subject-teacher/ViewSchedule")}
                   className="w-full text-left px-3 py-2 text-sm bg-purple-50 text-purple-700 rounded hover:bg-purple-100"
                 >
-                  📅 Download Report
+                  <div className="flex items-center space-x-2">
+                    <Download size={20} /> <span>Download Report</span>
+                  </div>
                 </button>
                 <button
                   onClick={() => navigate("/subject-teacher/qr-history")}
                   className="w-full text-left px-3 py-2 text-sm bg-yellow-50 text-yellow-700 rounded hover:bg-yellow-100"
                 >
-                  📱 Assign Class teacher
+                  <div className="flex items-center space-x-2">
+                    <User size={20} /> <span>Assign Class Teacher</span>
+                  </div>
                 </button>
                 <button
                   onClick={() => navigate("/subject-teacher/profile")}
                   className="w-full text-left px-3 py-2 text-sm bg-indigo-50 text-indigo-700 rounded hover:bg-indigo-100"
                 >
-                  👤 Assign Subject teacher
+                  <div className="flex items-center space-x-2">
+                    <User size={20} /> <span>Assign Subject Teacher</span>
+                  </div>
                 </button>
                 <button
                   onClick={() => navigate("/subject-teacher/profile")}
                   className="w-full text-left px-3 py-2 text-sm bg-indigo-50 text-indigo-700 rounded hover:bg-indigo-100"
                 >
-                  🗓️ Upload Time Table For All Classes
+                  <div className="flex items-center space-x-2">
+                    <CalendarDays size={20} /> <span>Upload Time Table For All Classes</span>
+                  </div>
                 </button>
                 <button
                   onClick={() => navigate("/subject-teacher/profile")}
                   className="w-full text-left px-3 py-2 text-sm bg-indigo-50 text-indigo-700 rounded hover:bg-indigo-100"
                 >
-                  📚 Upload Time Table For Subject Teachers
+                  <div className="flex items-center space-x-2">
+                    <CalendarDays size={20} /> <span>Upload Time Table For Subject Teachers</span>
+                  </div>
                 </button>
                 <button
                   onClick={() => navigate("/subject-teacher/profile")}
                   className="w-full text-left px-3 py-2 text-sm bg-indigo-50 text-indigo-700 rounded hover:bg-indigo-100"
                 >
-                  🛠️ Manage Teacher Arrangements
+                  <div className="flex items-center space-x-2">
+                    <Settings size={20} /> <span>Manage Teacher Arrangements</span>
+                  </div>
                 </button>
               </div>
             </div>
