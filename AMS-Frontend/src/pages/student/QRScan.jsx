@@ -2,10 +2,12 @@
 
 import { useState, useRef, useCallback, useEffect } from "react"
 import { Camera, FileText, Scan, Upload, CheckCircle, XCircle } from "lucide-react"
+import { useAuth } from "../../contexts/AuthContext"
 // import { Button } from "@/components/ui/button"
 // import { Card } from "@/components/ui/card"
 
 export default function Index() {
+  const { apiService } = useAuth() // Get API service from auth context
   const [activeMode, setActiveMode] = useState("none") // "none" | "qr" | "image"
   const [isScanningQR, setIsScanningQR] = useState(false)
   const [qrScanResult, setQrScanResult] = useState(null)
@@ -83,37 +85,98 @@ export default function Index() {
     setActiveMode("none")
   }, [stopCameraStream])
 
-  const simulateQRScanResult = useCallback(
-    (imageBlob) => {
-      const mockSuccess = Math.random() > 0.3
-      const imageUrl = URL.createObjectURL(imageBlob)
-      if (mockSuccess) {
-        setQrScanResult({
-          success: true,
-          message: "Attendance marked successfully!",
-          subject: "Data Structures & Algorithms",
-          timestamp: new Date(),
-          capturedImage: imageUrl,
-        })
-      } else {
+  const processQRScanResult = useCallback(
+    async (qrData, imageBlob) => {
+      try {
+        // Convert image blob to base64
+        const imageBase64 = imageBlob ? await blobToBase64(imageBlob) : null
+        const imageUrl = imageBlob ? URL.createObjectURL(imageBlob) : null
+
+        // Get device info and location
+        const deviceInfo = {
+          userAgent: navigator.userAgent,
+          platform: navigator.platform,
+          screenResolution: `${screen.width}x${screen.height}`,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          language: navigator.language,
+        }
+
+        // Get location if available
+        let location = null
+        if (navigator.geolocation) {
+          try {
+            const position = await new Promise((resolve, reject) => {
+              navigator.geolocation.getCurrentPosition(resolve, reject, {
+                timeout: 5000,
+                enableHighAccuracy: false
+              })
+            })
+            location = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude
+            }
+          } catch (error) {
+            console.log("Location not available:", error)
+          }
+        }
+
+        // Use API service from auth context
+
+        // Call backend API to scan QR
+        const result = await apiService.scanQR(qrData, deviceInfo, location, imageBase64)
+
+        if (result.success) {
+          setQrScanResult({
+            success: true,
+            message: "Attendance marked successfully!",
+            subject: result.data.session?.subject || "Unknown Subject",
+            className: result.data.session?.className || "Unknown Class",
+            timestamp: new Date(result.data.attendance?.markedAt || Date.now()),
+            capturedImage: imageUrl,
+            markingDelay: result.data.markingDelay ? Math.round(result.data.markingDelay / 60000) : 0,
+          })
+        } else {
+          setQrScanResult({
+            success: false,
+            message: result.error || "QR code not recognized or attendance failed.",
+            timestamp: new Date(),
+            capturedImage: imageUrl,
+          })
+        }
+      } catch (error) {
+        console.error("QR scan error:", error)
         setQrScanResult({
           success: false,
-          message: "QR code not recognized or attendance failed.",
+          message: "An error occurred while processing attendance. Please try again.",
           timestamp: new Date(),
-          capturedImage: imageUrl,
+          capturedImage: imageBlob ? URL.createObjectURL(imageBlob) : null,
         })
       }
+      
       stopQRScan()
     },
     [stopQRScan],
   )
 
+  // Helper function to convert blob to base64
+  const blobToBase64 = (blob) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(reader.result.split(',')[1]) // Remove data:image/jpeg;base64, prefix
+      reader.onerror = reject
+      reader.readAsDataURL(blob)
+    })
+  }
+
   const captureQRImageAndScan = useCallback(async () => {
     const blob = await captureFrameToBlob(qrVideoRef, qrCanvasRef)
     if (blob) {
-      simulateQRScanResult(blob)
+      // For now, we'll simulate QR data - in a real implementation, 
+      // you'd use a QR code detection library to extract the QR data from the image
+      const mockQrData = "simulated-qr-data-" + Date.now()
+      processQRScanResult(mockQrData, blob)
     }
-  }, [captureFrameToBlob, simulateQRScanResult])
+  }, [captureFrameToBlob, processQRScanResult])
 
   const resetQRScanner = useCallback(() => {
     setQrScanResult(null)

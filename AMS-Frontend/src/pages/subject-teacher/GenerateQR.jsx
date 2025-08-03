@@ -2,55 +2,102 @@
 
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../../contexts/AuthContext"
 
 const GenerateQR = () => {
   const navigate = useNavigate()
+  const { apiService } = useAuth()
   const [classes, setClasses] = useState([])
   const [selectedClass, setSelectedClass] = useState("")
   const [topic, setTopic] = useState("")
-  const [validityDuration, setValidityDuration] = useState(10)
+  const [validityDuration, setValidityDuration] = useState(5)
   const [loading, setLoading] = useState(false)
   const [generatedQR, setGeneratedQR] = useState(null)
   const [activeQRs, setActiveQRs] = useState([])
+  const [error, setError] = useState(null)
 
   useEffect(() => {
-    // Mock data for classes
-    setClasses([
-      {
-        id: 1,
-        className: "CS 3rd Year - Section A",
-        subject: "Data Structures & Algorithms",
-        subjectCode: "CS301",
-        students: 45,
-      },
-      {
-        id: 2,
-        className: "CS 3rd Year - Section B",
-        subject: "Data Structures & Algorithms",
-        subjectCode: "CS301",
-        students: 42,
-      },
-      {
-        id: 3,
-        className: "CS 2nd Year - Section A",
-        subject: "Database Management Systems",
-        subjectCode: "CS201",
-        students: 48,
-      },
-    ])
-
-    // Mock active QRs
-    setActiveQRs([
-      {
-        id: 1,
-        code: "QR_CS301_ACTIVE",
-        class: "CS 3rd Year - Section A",
-        validUntil: new Date(Date.now() + 5 * 60 * 1000),
-        studentsScanned: 12,
-        totalStudents: 45,
-      },
-    ])
+    // Load faculty sessions and subjects
+    loadFacultyData()
   }, [])
+
+  const loadFacultyData = async () => {
+    try {
+      // Get recent sessions to understand subjects and classes taught
+      const result = await apiService.getFacultySessions({ limit: 50 })
+      
+      if (result.success) {
+        // Extract unique class-subject combinations
+        const uniqueClasses = []
+        const seenCombinations = new Set()
+        
+        result.data.sessions.forEach(session => {
+          const combination = `${session.className}-${session.subject}`
+          if (!seenCombinations.has(combination)) {
+            seenCombinations.add(combination)
+            uniqueClasses.push({
+              id: uniqueClasses.length + 1,
+              className: session.className,
+              subject: session.subject,
+              subjectCode: session.subject.split(' ').map(word => word.charAt(0)).join('').toUpperCase(),
+              students: 45, // Default for now - could be calculated from attendance data
+            })
+          }
+        })
+
+        // Add default classes if none exist
+        if (uniqueClasses.length === 0) {
+          uniqueClasses.push(
+            {
+              id: 1,
+              className: "CS 3rd Year - Section A",
+              subject: "Data Structures & Algorithms",
+              subjectCode: "CS301",
+              students: 45,
+            },
+            {
+              id: 2,
+              className: "CS 2nd Year - Section A", 
+              subject: "Database Management Systems",
+              subjectCode: "CS201",
+              students: 48,
+            }
+          )
+        }
+
+        setClasses(uniqueClasses)
+
+        // Get active sessions for current faculty
+        const activeSessions = result.data.sessions.filter(session => 
+          session.status === 'active' && new Date(session.endTime) > new Date()
+        )
+
+        setActiveQRs(activeSessions.map(session => ({
+          id: session._id,
+          code: session.qrToken,
+          class: session.className,
+          subject: session.subject,
+          topic: session.topic,
+          validUntil: new Date(session.endTime),
+          studentsScanned: session.attendanceStats?.present || 0,
+          totalStudents: session.attendanceStats?.total || 0,
+          qrImage: session.qrCodeImage,
+        })))
+      }
+    } catch (error) {
+      console.error("Error loading faculty data:", error)
+      // Use default data on error
+      setClasses([
+        {
+          id: 1,
+          className: "CS 3rd Year - Section A",
+          subject: "Data Structures & Algorithms", 
+          subjectCode: "CS301",
+          students: 45,
+        }
+      ])
+    }
+  }
 
   const handleGenerateQR = async (e) => {
     e.preventDefault()
@@ -60,31 +107,53 @@ const GenerateQR = () => {
     }
 
     setLoading(true)
+    setError(null)
 
-    // Simulate QR generation
-    setTimeout(() => {
+    try {
       const classData = classes.find((c) => c.id === Number.parseInt(selectedClass))
-      const newQR = {
-        id: Date.now(),
-        code: `QR_${classData.subjectCode}_${Date.now()}`,
-        class: classData.className,
+      
+      // Call backend API to generate QR
+      const result = await apiService.generateQR({
         subject: classData.subject,
+        className: classData.className,
         topic: topic,
-        generatedAt: new Date(),
-        validUntil: new Date(Date.now() + validityDuration * 60 * 1000),
-        studentsScanned: 0,
-        totalStudents: classData.students,
-        qrImage: `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=QR_${classData.subjectCode}_${Date.now()}`,
+        validityDuration: validityDuration
+      })
+
+      if (result.success) {
+        const qrData = {
+          id: result.data.session._id,
+          code: result.data.qrCode.token,
+          class: result.data.session.className,
+          subject: result.data.session.subject,
+          topic: result.data.session.topic,
+          generatedAt: new Date(result.data.session.startTime),
+          validUntil: new Date(result.data.session.endTime),
+          studentsScanned: 0,
+          totalStudents: classData.students,
+          qrImage: result.data.qrCode.image,
+          scanUrl: result.data.scanUrl,
+        }
+
+        setLoading(false)
+        navigate("/subject-teacher/GenerateQRDisplay", { state: { qrData } })
+
+        // Reset form
+        setSelectedClass("")
+        setTopic("")
+        setValidityDuration(5)
+
+        // Refresh active QRs
+        loadFacultyData()
+      } else {
+        setError(result.error || "Failed to generate QR code")
+        setLoading(false)
       }
-
+    } catch (error) {
+      console.error("QR generation error:", error)
+      setError("An error occurred while generating QR code. Please try again.")
       setLoading(false)
-      navigate("/subject-teacher/GenerateQRDisplay", { state: { qrData: newQR } })
-
-      // Reset form
-      setSelectedClass("")
-      setTopic("")
-      setValidityDuration(10)
-    }, 2000)
+    }
   }
 
   const handleCancelQR = (qrId) => {

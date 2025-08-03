@@ -1,6 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState, useEffect } from "react"
+import apiService from "../services/api"
 
 const AuthContext = createContext({})
 
@@ -11,58 +12,6 @@ export const useAuth = () => {
   }
   return context
 }
-
-// ✅ Mock users using loginId (ID-based login)
-const mockUsers = [
-  {
-    id: 1,
-    loginId: "student001",
-    email: "student@college.edu",
-    password: "demo123",
-    role: "student",
-    name: "John Doe",
-    studentInfo: {
-      rollNumber: "CS21B001",
-      class: "CS 3rd Year - Section A",
-      year: "3rd Year",
-      semester: "6th Semester",
-      branch: "Computer Science & Engineering",
-      program: "B.Tech Computer Science",
-    },
-  },
-  {
-    id: 2,
-    loginId: "classteach01",
-    email: "class.teacher@college.edu",
-    password: "demo123",
-    role: "class_teacher",
-    name: "Dr. Sarah Johnson",
-    teacherInfo: {
-      employeeId: "EMP001",
-      department: "Computer Science",
-    },
-  },
-  {
-    id: 3,
-    loginId: "subjectteach01",
-    email: "subject.teacher@college.edu",
-    password: "demo123",
-    role: "subject_teacher",
-    name: "Prof. Michael Chen",
-    teacherInfo: {
-      employeeId: "EMP002",
-      department: "Computer Science",
-    },
-  },
-  {
-    id: 4,
-    loginId: "admin01",
-    email: "admin@college.edu",
-    password: "demo123",
-    role: "admin",
-    name: "Admin",
-  },
-]
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
@@ -75,15 +24,29 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthStatus = async () => {
     try {
-      const userData = localStorage.getItem("userData")
-      if (userData) {
-        const parsedUser = JSON.parse(userData)
-        setUser(parsedUser)
-        setIsAuthenticated(true)
+      // Check if user has valid token
+      if (apiService.isAuthenticated()) {
+        // Try to get current user profile
+        const result = await apiService.getProfile()
+        if (result.success) {
+          setUser(result.data.user)
+          setIsAuthenticated(true)
+        } else {
+          // Token invalid, clear auth
+          await logout()
+        }
+      } else {
+        // Check localStorage for user data (fallback)
+        const userData = localStorage.getItem("userData")
+        if (userData) {
+          const parsedUser = JSON.parse(userData)
+          setUser(parsedUser)
+          setIsAuthenticated(true)
+        }
       }
     } catch (error) {
       console.error("Auth check failed:", error)
-      logout()
+      await logout()
     } finally {
       setLoading(false)
     }
@@ -91,59 +54,98 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate delay
-
-      const { id, password, userType } = credentials
-
-      // ✅ Find user by loginId and role
-      const mockUser = mockUsers.find(
-        (u) => u.loginId === id && u.role === userType
-      )
-
-      if (!mockUser || mockUser.password !== password) {
-        return { success: false, error: "Invalid credentials" }
-      }
-
-      const { password: _, ...userWithoutPassword } = mockUser
-
-      setUser(userWithoutPassword)
-      setIsAuthenticated(true)
-      localStorage.setItem("userData", JSON.stringify(userWithoutPassword))
-
-      const redirectUrls = {
-        student: "/student/dashboard",
-        class_teacher: "/class-teacher/dashboard",
-        subject_teacher: "/subject-teacher/dashboard",
-        admin: "/admin/dashboard",
-      }
-
-      return {
-        success: true,
-        redirectUrl: redirectUrls[userType] || "/dashboard",
-        user: userWithoutPassword,
+      setLoading(true)
+      
+      // Call real API login
+      const result = await apiService.login(credentials)
+      
+      if (result.success) {
+        setUser(result.user)
+        setIsAuthenticated(true)
+        
+        return {
+          success: true,
+          redirectUrl: result.redirectUrl,
+          user: result.user,
+        }
+      } else {
+        return {
+          success: false,
+          error: result.error || "Login failed"
+        }
       }
     } catch (error) {
       console.error("Login error:", error)
-      return { success: false, error: "Network error occurred" }
+      return { 
+        success: false, 
+        error: "Network error occurred. Please check your connection." 
+      }
+    } finally {
+      setLoading(false)
     }
   }
 
   const logout = async () => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      setLoading(true)
+      // Call API logout to invalidate tokens on server
+      await apiService.logout()
     } catch (error) {
       console.error("Logout error:", error)
     } finally {
+      // Clear local state
       setUser(null)
       setIsAuthenticated(false)
-      localStorage.removeItem("userData")
+      setLoading(false)
+      
+      // Redirect to login page
       window.location.href = "/"
     }
   }
 
-  const updateUser = (userData) => {
-    setUser(userData)
-    localStorage.setItem("userData", JSON.stringify(userData))
+  const updateUser = async (userData) => {
+    try {
+      // Update profile on server
+      const result = await apiService.updateProfile(userData)
+      
+      if (result.success) {
+        setUser(result.data.user)
+        return { success: true }
+      } else {
+        return { success: false, error: result.error }
+      }
+    } catch (error) {
+      console.error("Update user error:", error)
+      return { success: false, error: "Failed to update profile" }
+    }
+  }
+
+  const register = async (userData) => {
+    try {
+      setLoading(true)
+      const result = await apiService.register(userData)
+      
+      if (result.success) {
+        return { success: true, data: result.data }
+      } else {
+        return { success: false, error: result.error }
+      }
+    } catch (error) {
+      console.error("Registration error:", error)
+      return { success: false, error: "Registration failed" }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const changePassword = async (passwordData) => {
+    try {
+      const result = await apiService.changePassword(passwordData)
+      return result
+    } catch (error) {
+      console.error("Change password error:", error)
+      return { success: false, error: "Password change failed" }
+    }
   }
 
   const value = {
@@ -153,6 +155,9 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     updateUser,
+    register,
+    changePassword,
+    apiService, // Expose API service for direct use in components
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
