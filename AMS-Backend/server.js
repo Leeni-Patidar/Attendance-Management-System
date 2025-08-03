@@ -15,6 +15,9 @@ import { handleAuthErrors } from './src/middleware/auth.js';
 
 // Import routes
 import authRoutes from './src/routes/auth.js';
+import studentRoutes from './src/routes/students.js';
+import facultyRoutes from './src/routes/faculty.js';
+import adminRoutes from './src/routes/admin.js';
 
 // Load environment variables
 dotenv.config();
@@ -175,6 +178,9 @@ app.get('/health', (req, res) => {
 
 // API routes
 app.use('/api/auth', authRoutes);
+app.use('/api/students', studentRoutes);
+app.use('/api/faculty', facultyRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {

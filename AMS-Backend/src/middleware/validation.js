@@ -525,3 +525,105 @@ export const sanitizeInput = (req, res, next) => {
 
   next();
 };
+
+// QR Scan validation
+export const validateQRScan = [
+  body('qrData')
+    .notEmpty()
+    .withMessage('QR data is required')
+    .isString()
+    .withMessage('QR data must be a string'),
+  
+  body('deviceInfo')
+    .optional()
+    .isObject()
+    .withMessage('Device info must be an object'),
+    
+  body('location')
+    .optional()
+    .isObject()
+    .withMessage('Location must be an object'),
+    
+  body('capturedImage')
+    .optional()
+    .isString()
+    .withMessage('Captured image must be a base64 string')
+];
+
+// Missed class validation
+export const validateMissedClass = [
+  body('sessionId')
+    .notEmpty()
+    .withMessage('Session ID is required')
+    .isMongoId()
+    .withMessage('Invalid session ID'),
+    
+  body('reason')
+    .notEmpty()
+    .withMessage('Reason is required')
+    .isLength({ min: 10 })
+    .withMessage('Reason must be at least 10 characters long'),
+    
+  body('supportingDocument')
+    .optional()
+    .isURL()
+    .withMessage('Supporting document must be a valid URL')
+];
+
+// Session creation validation  
+export const validateSessionCreation = [
+  body('subject')
+    .notEmpty()
+    .withMessage('Subject is required')
+    .isLength({ min: 2, max: 100 })
+    .withMessage('Subject must be between 2 and 100 characters'),
+    
+  body('className')
+    .notEmpty()
+    .withMessage('Class name is required')
+    .isLength({ min: 2, max: 50 })
+    .withMessage('Class name must be between 2 and 50 characters'),
+    
+  body('topic')
+    .notEmpty()
+    .withMessage('Topic is required')
+    .isLength({ min: 2, max: 200 })
+    .withMessage('Topic must be between 2 and 200 characters'),
+    
+  body('validityDuration')
+    .optional()
+    .isInt({ min: 1, max: 60 })
+    .withMessage('Validity duration must be between 1 and 60 minutes')
+];
+
+// Attendance override validation
+export const validateAttendanceOverride = [
+  body('sessionId')
+    .notEmpty()
+    .withMessage('Session ID is required')
+    .isMongoId()
+    .withMessage('Invalid session ID'),
+    
+  body('studentId')
+    .notEmpty()
+    .withMessage('Student ID is required')
+    .isMongoId()
+    .withMessage('Invalid student ID'),
+    
+  body('newStatus')
+    .notEmpty()
+    .withMessage('New status is required')
+    .isIn(['present', 'absent', 'late'])
+    .withMessage('Status must be present, absent, or late'),
+    
+  body('reason')
+    .notEmpty()
+    .withMessage('Reason is required')
+    .isLength({ min: 10 })
+    .withMessage('Reason must be at least 10 characters long'),
+    
+  body('evidence')
+    .optional()
+    .isString()
+    .withMessage('Evidence must be a string')
+];
