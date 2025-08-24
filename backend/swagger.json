@@ -1,0 +1,717 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Attendance Management System API",
+    "description": "API documentation for Attendance Management System",
+    "version": "1.0.0",
+    "contact": {
+      "email": "admin@example.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000",
+      "description": "Development server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authentication endpoints"
+    },
+    {
+      "name": "Users",
+      "description": "User management endpoints"
+    },
+    {
+      "name": "Classes",
+      "description": "Class management endpoints"
+    },
+    {
+      "name": "Subjects",
+      "description": "Subject management endpoints"
+    },
+    {
+      "name": "Timetable",
+      "description": "Timetable management endpoints"
+    },
+    {
+      "name": "Attendance",
+      "description": "Attendance management endpoints"
+    },
+    {
+      "name": "QR",
+      "description": "QR code generation and scanning endpoints"
+    },
+    {
+      "name": "Reports",
+      "description": "Report generation endpoints"
+    }
+  ],
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Register a new user",
+        "description": "Register a new user with the provided details",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "email", "password", "role", "loginId"],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "john@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "password123"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": ["student", "teacher", "subject_teacher", "class_teacher", "admin"],
+                    "example": "student"
+                  },
+                  "loginId": {
+                    "type": "string",
+                    "example": "john123"
+                  },
+                  "rollNumber": {
+                    "type": "string",
+                    "example": "CS10101"
+                  },
+                  "employeeId": {
+                    "type": "string",
+                    "example": "EMP001"
+                  },
+                  "department": {
+                    "type": "string",
+                    "example": "Computer Science"
+                  },
+                  "year": {
+                    "type": "string",
+                    "example": "1st Year"
+                  },
+                  "semester": {
+                    "type": "string",
+                    "example": "1st Semester"
+                  },
+                  "branch": {
+                    "type": "string",
+                    "example": "CSE"
+                  },
+                  "program": {
+                    "type": "string",
+                    "example": "B.Tech"
+                  },
+                  "classId": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User registered successfully. Please verify your email."
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "John Doe"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "john@example.com"
+                        },
+                        "role": {
+                          "type": "string",
+                          "example": "student"
+                        },
+                        "loginId": {
+                          "type": "string",
+                          "example": "john123"
+                        },
+                        "isEmailVerified": {
+                          "type": "boolean",
+                          "example": false
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Email already exists"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login user",
+        "description": "Login with loginId and password",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["loginId", "password"],
+                "properties": {
+                  "loginId": {
+                    "type": "string",
+                    "example": "john123"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "password123"
+                  },
+                  "userType": {
+                    "type": "string",
+                    "enum": ["student", "teacher", "subject_teacher", "class_teacher", "admin"],
+                    "example": "student"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Login successful"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "John Doe"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "john@example.com"
+                            },
+                            "role": {
+                              "type": "string",
+                              "example": "student"
+                            },
+                            "loginId": {
+                              "type": "string",
+                              "example": "john123"
+                            },
+                            "isEmailVerified": {
+                              "type": "boolean",
+                              "example": true
+                            }
+                          }
+                        },
+                        "token": {
+                          "type": "string",
+                          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                        },
+                        "refreshToken": {
+                          "type": "string",
+                          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                        },
+                        "redirectUrl": {
+                          "type": "string",
+                          "example": "/student/dashboard"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid credentials"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Email not verified",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Please verify your email first. A new verification code has been sent to your email."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/qr/generate": {
+      "post": {
+        "tags": ["QR"],
+        "summary": "Generate QR code for attendance",
+        "description": "Generate a QR code for attendance marking",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["subjectId"],
+                "properties": {
+                  "subjectId": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "topic": {
+                    "type": "string",
+                    "example": "Introduction to Programming"
+                  },
+                  "validityDuration": {
+                    "type": "integer",
+                    "example": 10
+                  },
+                  "location": {
+                    "type": "string",
+                    "example": "Room 101"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "QR code generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "QR code generated successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "qrSession": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "code": {
+                              "type": "string",
+                              "example": "QR_CS101_1623456789_a1b2c3d4"
+                            },
+                            "topic": {
+                              "type": "string",
+                              "example": "Introduction to Programming"
+                            },
+                            "validFrom": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2023-06-12T10:00:00.000Z"
+                            },
+                            "validTill": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2023-06-12T10:10:00.000Z"
+                            },
+                            "isActive": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "location": {
+                              "type": "string",
+                              "example": "Room 101"
+                            },
+                            "qrImage": {
+                              "type": "string",
+                              "example": "/uploads/qrcodes/qr_CS101_1623456789.png"
+                            }
+                          }
+                        },
+                        "subject": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Introduction to Programming"
+                            },
+                            "code": {
+                              "type": "string",
+                              "example": "CS101"
+                            }
+                          }
+                        },
+                        "class": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "CS-101"
+                            }
+                          }
+                        },
+                        "qrImageUrl": {
+                          "type": "string",
+                          "example": "http://localhost:5000/uploads/qrcodes/qr_CS101_1623456789.png"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Subject ID is required"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "You are not authorized to generate QR code for this subject"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Subject not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/qr/scan": {
+      "post": {
+        "tags": ["QR"],
+        "summary": "Scan QR code for attendance",
+        "description": "Scan QR code to mark attendance",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["qrCode"],
+                "properties": {
+                  "qrCode": {
+                    "type": "string",
+                    "example": "QR_CS101_1623456789_a1b2c3d4"
+                  },
+                  "location": {
+                    "type": "string",
+                    "example": "Room 101"
+                  },
+                  "deviceInfo": {
+                    "type": "string",
+                    "example": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Attendance marked successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Attendance marked successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "attendance": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "date": {
+                              "type": "string",
+                              "format": "date",
+                              "example": "2023-06-12"
+                            },
+                            "status": {
+                              "type": "string",
+                              "example": "present"
+                            },
+                            "markTime": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2023-06-12T10:05:00.000Z"
+                            },
+                            "location": {
+                              "type": "string",
+                              "example": "Room 101"
+                            },
+                            "deviceInfo": {
+                              "type": "string",
+                              "example": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+                            }
+                          }
+                        },
+                        "subject": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Introduction to Programming"
+                            },
+                            "code": {
+                              "type": "string",
+                              "example": "CS101"
+                            }
+                          }
+                        },
+                        "class": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "CS-101"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "QR code is required"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Only students can mark attendance"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
+

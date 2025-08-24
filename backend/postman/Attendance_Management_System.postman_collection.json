@@ -1,0 +1,677 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Attendance Management System",
+    "description": "API collection for Attendance Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\",\n    \"role\": \"student\",\n    \"loginId\": \"john123\",\n    \"rollNumber\": \"CS10101\",\n    \"department\": \"Computer Science\",\n    \"year\": \"1st Year\",\n    \"semester\": \"1st Semester\",\n    \"program\": \"B.Tech\",\n    \"classId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            },
+            "description": "Register a new user"
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"john@example.com\",\n    \"otp\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/verify-email",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "verify-email"]
+            },
+            "description": "Verify email with OTP"
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"loginId\": \"john123\",\n    \"password\": \"password123\",\n    \"userType\": \"student\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Login user"
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/refresh-token",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "refresh-token"]
+            },
+            "description": "Refresh JWT token"
+          },
+          "response": []
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"john@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/forgot-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "forgot-password"]
+            },
+            "description": "Request password reset"
+          },
+          "response": []
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"john@example.com\",\n    \"otp\": \"123456\",\n    \"newPassword\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/reset-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "reset-password"]
+            },
+            "description": "Reset password with OTP"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "me"]
+            },
+            "description": "Get current user"
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "logout"]
+            },
+            "description": "Logout user"
+          },
+          "response": []
+        }
+      ],
+      "description": "Authentication endpoints"
+    },
+    {
+      "name": "QR",
+      "item": [
+        {
+          "name": "Generate QR Code",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"subjectId\": 1,\n    \"topic\": \"Introduction to Programming\",\n    \"validityDuration\": 10,\n    \"location\": \"Room 101\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/qr/generate",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "qr", "generate"]
+            },
+            "description": "Generate QR code for attendance"
+          },
+          "response": []
+        },
+        {
+          "name": "Scan QR Code",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"qrCode\": \"QR_CS101_1623456789_a1b2c3d4\",\n    \"location\": \"Room 101\",\n    \"deviceInfo\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/qr/scan",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "qr", "scan"]
+            },
+            "description": "Scan QR code for attendance"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Active QR Sessions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/qr/active",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "qr", "active"]
+            },
+            "description": "Get active QR sessions for teacher"
+          },
+          "response": []
+        },
+        {
+          "name": "Get QR Session History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/qr/history?page=1&limit=10&subjectId=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "qr", "history"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "subjectId",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get QR session history"
+          },
+          "response": []
+        },
+        {
+          "name": "Get QR Session Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/qr/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "qr", "1"]
+            },
+            "description": "Get QR session details with attendance list"
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel QR Session",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/qr/1/cancel",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "qr", "1", "cancel"]
+            },
+            "description": "Cancel QR session"
+          },
+          "response": []
+        }
+      ],
+      "description": "QR code generation and scanning endpoints"
+    },
+    {
+      "name": "Attendance",
+      "item": [
+        {
+          "name": "Mark Attendance",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"studentId\": 1,\n    \"subjectId\": 1,\n    \"date\": \"2023-06-12\",\n    \"status\": \"present\",\n    \"remarks\": \"Student was present\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/attendance/mark",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "attendance", "mark"]
+            },
+            "description": "Mark attendance manually"
+          },
+          "response": []
+        },
+        {
+          "name": "Bulk Mark Attendance",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"subjectId\": 1,\n    \"date\": \"2023-06-12\",\n    \"attendanceData\": [\n        {\n            \"studentId\": 1,\n            \"status\": \"present\",\n            \"remarks\": \"Student was present\"\n        },\n        {\n            \"studentId\": 2,\n            \"status\": \"absent\",\n            \"remarks\": \"Student was absent\"\n        }\n    ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/attendance/bulk",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "attendance", "bulk"]
+            },
+            "description": "Bulk mark attendance"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Attendance by Student",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/attendance/student/1?startDate=2023-06-01&endDate=2023-06-30&subjectId=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "attendance", "student", "1"],
+              "query": [
+                {
+                  "key": "startDate",
+                  "value": "2023-06-01"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2023-06-30"
+                },
+                {
+                  "key": "subjectId",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get attendance by student"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Attendance by Subject",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/attendance/subject/1?date=2023-06-12",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "attendance", "subject", "1"],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2023-06-12"
+                }
+              ]
+            },
+            "description": "Get attendance by subject"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Attendance by Class",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/attendance/class/1?date=2023-06-12&subjectId=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "attendance", "class", "1"],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2023-06-12"
+                },
+                {
+                  "key": "subjectId",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get attendance by class"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Attendance",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"status\": \"late\",\n    \"remarks\": \"Student was late\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/attendance/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "attendance", "1"]
+            },
+            "description": "Update attendance"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Attendance",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/attendance/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "attendance", "1"]
+            },
+            "description": "Delete attendance"
+          },
+          "response": []
+        }
+      ],
+      "description": "Attendance management endpoints"
+    },
+    {
+      "name": "Reports",
+      "item": [
+        {
+          "name": "Generate Student Report",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/student/1?format=json&startDate=2023-06-01&endDate=2023-06-30&subjectId=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reports", "student", "1"],
+              "query": [
+                {
+                  "key": "format",
+                  "value": "json"
+                },
+                {
+                  "key": "startDate",
+                  "value": "2023-06-01"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2023-06-30"
+                },
+                {
+                  "key": "subjectId",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Generate student attendance report"
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Class Report",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/class/1?format=json&startDate=2023-06-01&endDate=2023-06-30&subjectId=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reports", "class", "1"],
+              "query": [
+                {
+                  "key": "format",
+                  "value": "json"
+                },
+                {
+                  "key": "startDate",
+                  "value": "2023-06-01"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2023-06-30"
+                },
+                {
+                  "key": "subjectId",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Generate class attendance report"
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Subject Report",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/subject/1?format=json&startDate=2023-06-01&endDate=2023-06-30",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reports", "subject", "1"],
+              "query": [
+                {
+                  "key": "format",
+                  "value": "json"
+                },
+                {
+                  "key": "startDate",
+                  "value": "2023-06-01"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2023-06-30"
+                }
+              ]
+            },
+            "description": "Generate subject attendance report"
+          },
+          "response": []
+        }
+      ],
+      "description": "Report generation endpoints"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
+
