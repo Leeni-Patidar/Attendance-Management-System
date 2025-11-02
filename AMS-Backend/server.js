@@ -12,6 +12,7 @@ const userRoutes = require('./routes/users');
 const classRoutes = require('./routes/classes');
 const attendanceRoutes = require('./routes/attendance');
 const reportRoutes = require('./routes/reports');
+const studentRoutes = require('./routes/students');
 const { errorHandler } = require('./middleware/errorHandler');
 
 const app = express();
@@ -30,6 +31,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/classes', classRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/reports', reportRoutes);
+app.use('/api/students', studentRoutes);
 
 // Error handler
 app.use(errorHandler);

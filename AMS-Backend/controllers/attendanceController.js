@@ -1,51 +1,68 @@
+
 const Attendance = require('../models/Attendance');
 const Class = require('../models/Class');
 
+// @desc    Mark attendance
+// @route   POST /api/attendance/mark
+// @access  Private/Teacher
 exports.markAttendance = async (req, res, next) => {
   try {
-    const { classId, date, records } = req.body;
-    const parsedDate = new Date(date);
-    const existing = await Attendance.findOne({ class: classId, date: parsedDate });
-    if (existing) return res.status(400).json({ message: 'Attendance already marked for this class and date' });
-    const attendance = await Attendance.create({ class: classId, teacher: req.user.id, date: parsedDate, records });
-    res.status(201).json(attendance);
+    const { classId, studentId, status } = req.body;
+
+    const newAttendance = new Attendance({
+      class: classId,
+      student: studentId,
+      status,
+    });
+
+    const savedAttendance = await newAttendance.save();
+    res.status(201).json(savedAttendance);
   } catch (err) {
     next(err);
   }
 };
 
+// @desc    Get attendance by class
+// @route   GET /api/attendance/class/:classId
+// @access  Private
 exports.getAttendanceByClass = async (req, res, next) => {
   try {
-    const { classId } = req.params;
-    const attendances = await Attendance.find({ class: classId }).populate('records.student', 'name email');
-    res.json(attendances);
+    const attendance = await Attendance.find({ class: req.params.classId }).populate('student', 'name');
+    res.json(attendance);
   } catch (err) {
     next(err);
   }
 };
 
+// @desc    Get attendance by student
+// @route   GET /api/attendance/student/:studentId
+// @access  Private
 exports.getAttendanceByStudent = async (req, res, next) => {
   try {
-    const { studentId } = req.params;
-    const attendances = await Attendance.find({ 'records.student': studentId }).populate('class', 'name code');
-    res.json(attendances);
+    const attendance = await Attendance.find({ student: req.params.studentId }).populate('class', 'name');
+    res.json(attendance);
   } catch (err) {
     next(err);
   }
 };
 
+// @desc    Update attendance record
+// @route   PUT /api/attendance/:attendanceId
+// @access  Private/Admin or Teacher
 exports.updateAttendanceRecord = async (req, res, next) => {
   try {
-    const { attendanceId } = req.params;
-    const { studentId, status, remark } = req.body;
-    const attendance = await Attendance.findById(attendanceId);
-    if (!attendance) return res.status(404).json({ message: 'Attendance not found' });
-    const rec = attendance.records.find(r => r.student.toString() === studentId.toString());
-    if (!rec) return res.status(404).json({ message: 'Record not found' });
-    if (status) rec.status = status;
-    if (remark !== undefined) rec.remark = remark;
-    await attendance.save();
-    res.json(attendance);
+    const { status } = req.body;
+    const updatedAttendance = await Attendance.findByIdAndUpdate(
+      req.params.attendanceId,
+      { status },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedAttendance) {
+      return res.status(404).json({ message: 'Attendance record not found' });
+    }
+
+    res.json(updatedAttendance);
   } catch (err) {
     next(err);
   }

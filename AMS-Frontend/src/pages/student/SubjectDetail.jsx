@@ -49,7 +49,9 @@ const SubjectDetail = () => {
   }
 
   const getFirstDayOfMonth = (date) => {
-    return new Date(date.getFullYear(), date.getMonth(), 1).getDay()
+    // Convert JS Sunday-first (0..6, Sun..Sat) to Monday-first (0..6, Mon..Sun)
+    const raw = new Date(date.getFullYear(), date.getMonth(), 1).getDay()
+    return (raw + 6) % 7
   }
 
   const formatDate = (year, month, day) => {
