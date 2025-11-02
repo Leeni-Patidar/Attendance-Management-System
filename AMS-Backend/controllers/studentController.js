@@ -38,3 +38,20 @@ exports.getStudent = async (req, res, next) => {
     next(err);
   }
 };
+
+// @desc Get current authenticated student's profile
+// @route GET /api/students/me
+// @access Private (Student)
+exports.getMyStudent = async (req, res, next) => {
+  try {
+    const email = req.user && req.user.email
+    if (!email) return res.status(400).json({ message: 'Email not available in token' })
+
+    const student = await Student.findOne({ email })
+    if (!student) return res.status(404).json({ message: 'Student not found' })
+
+    res.json(student)
+  } catch (err) {
+    next(err)
+  }
+}

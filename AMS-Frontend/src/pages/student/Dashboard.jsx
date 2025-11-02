@@ -11,47 +11,52 @@ const StudentDashboard = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    setTimeout(() => {
-      setSubjects([
-        {
-          id: 1,
-          courseName: "Data Structures & Algorithms",
-          courseCode: "CS301",
-          totalClasses: 50,
-          presentDays: 45,
-          absentDays: 5,
-          attendance: 90,
-        },
-        {
-          id: 2,
-          courseName: "Database Management Systems",
-          courseCode: "CS302",
-          totalClasses: 45,
-          presentDays: 38,
-          absentDays: 7,
-          attendance: 84,
-        },
-        {
-          id: 3,
-          courseName: "Computer Networks",
-          courseCode: "CS303",
-          totalClasses: 40,
-          presentDays: 28,
-          absentDays: 12,
-          attendance: 70,
-        },
-        {
-          id: 4,
-          courseName: "Software Engineering",
-          courseCode: "CS304",
-          totalClasses: 35,
-          presentDays: 20,
-          absentDays: 15,
-          attendance: 57,
-        },
-      ])
-      setLoading(false)
-    }, 1000)
+    // fetch student's subjects/profile from backend
+    const fetchDashboard = async () => {
+      try {
+        const token = localStorage.getItem('token')
+        const res = await fetch('/api/students/me', {
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        })
+        if (!res.ok) {
+          console.error('Failed to load student data', res.status)
+          setLoading(false)
+          return
+        }
+        const data = await res.json()
+
+        // Attempt to normalize subjects. Backend `student.subjects` may be array or object.
+        let subjectsFromData = []
+        if (Array.isArray(data.subjects)) {
+          subjectsFromData = data.subjects
+        } else if (data.subjects && typeof data.subjects === 'object') {
+          // convert object entries to array
+          subjectsFromData = Object.keys(data.subjects).map((k) => ({ id: k, ...data.subjects[k] }))
+        }
+
+        // Map to expected UI fields; attendance data may not be present per-subject
+        const mapped = subjectsFromData.map((s, idx) => ({
+          id: s.id || s._id || idx,
+          courseName: s.name || s.courseName || s.title || `Subject ${idx + 1}`,
+          courseCode: s.code || s.courseCode || s.courseId || `S${idx + 1}`,
+          totalClasses: s.totalClasses || 0,
+          presentDays: s.presentDays || 0,
+          absentDays: s.absentDays || 0,
+          attendance: s.attendance || 0,
+        }))
+
+        setSubjects(mapped)
+      } catch (err) {
+        console.error('Error loading dashboard:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchDashboard()
   }, [])
 
   const getAttendanceColor = (percentage) => {

@@ -12,57 +12,22 @@ export const useAuth = () => {
   return context
 }
 
-// ✅ Mock users using loginId (ID-based login)
-const mockUsers = [
-  {
-    id: 1,
-    loginId: "student001",
-    email: "student@college.edu",
-    password: "demo123",
-    role: "student",
-    name: "John Doe",
-    studentInfo: {
-      rollNumber: "CS21B001",
-      class: "CS 3rd Year - Section A",
-      year: "3rd Year",
-      semester: "6th Semester",
-      branch: "Computer Science & Engineering",
-      program: "B.Tech Computer Science",
-    },
-  },
-  {
-    id: 2,
-    loginId: "classteach01",
-    email: "class.teacher@college.edu",
-    password: "demo123",
-    role: "class_teacher",
-    name: "Dr. Sarah Johnson",
-    teacherInfo: {
-      employeeId: "EMP001",
-      department: "Computer Science",
-    },
-  },
-  {
-    id: 3,
-    loginId: "subjectteach01",
-    email: "subject.teacher@college.edu",
-    password: "demo123",
-    role: "subject_teacher",
-    name: "Prof. Michael Chen",
-    teacherInfo: {
-      employeeId: "EMP002",
-      department: "Computer Science",
-    },
-  },
-  {
-    id: 4,
-    loginId: "admin01",
-    email: "admin@college.edu",
-    password: "demo123",
-    role: "admin",
-    name: "Admin",
-  },
-]
+// Helper: decode JWT payload (safe)
+const parseJwt = (token) => {
+  try {
+    const base64Url = token.split('.')[1]
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    )
+    return JSON.parse(jsonPayload)
+  } catch (err) {
+    return null
+  }
+}
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
@@ -75,52 +40,83 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthStatus = async () => {
     try {
-      const userData = localStorage.getItem("userData")
-      if (userData) {
-        const parsedUser = JSON.parse(userData)
-        setUser(parsedUser)
-        setIsAuthenticated(true)
+      const token = localStorage.getItem('token')
+      if (token) {
+        const decoded = parseJwt(token)
+        if (decoded) {
+          const role = decoded?.user?.role || decoded?.role
+          const id = decoded?.user?.id || decoded?.id
+          const email = decoded?.user?.email || decoded?.email || null
+          setUser({ id, role, email })
+          setIsAuthenticated(true)
+        } else {
+          localStorage.removeItem('token')
+        }
       }
     } catch (error) {
-      console.error("Auth check failed:", error)
+      console.error('Auth check failed:', error)
       logout()
     } finally {
       setLoading(false)
     }
   }
 
-  const login = async (credentials) => {
+  const login = async ({ email, password, userType }) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate delay
-
-      const { id, password, userType } = credentials
-
-      // ✅ Find user by loginId and role
-      const mockUser = mockUsers.find(
-        (u) => u.loginId === id && u.role === userType
-      )
-
-      if (!mockUser || mockUser.password !== password) {
-        return { success: false, error: "Invalid credentials" }
+      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000"
+      // Map frontend userType to backend role strings
+      const mapRole = (t) => {
+        if (!t) return null
+        const s = String(t).toLowerCase()
+        if (s === 'student') return 'Student'
+        if (s === 'admin') return 'Admin'
+        if (s.includes('teacher')) return 'Teacher'
+        return null
       }
 
-      const { password: _, ...userWithoutPassword } = mockUser
+      const roleToSend = mapRole(userType)
 
-      setUser(userWithoutPassword)
+      const res = await fetch(`${API_URL}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, role: roleToSend }),
+      })
+
+      if (!res.ok) {
+        const text = await res.text().catch(() => "")
+        const err = text ? JSON.parse(text) : { message: "Invalid credentials" }
+        return { success: false, error: err.message || "Invalid credentials" }
+      }
+
+      const data = await res.json()
+      const token = data.token
+      if (!token) return { success: false, error: "Invalid token from server" }
+
+      localStorage.setItem("token", token)
+
+  const decoded = parseJwt(token)
+  const decodedRole = decoded?.user?.role || decoded?.role || null
+  const id = decoded?.user?.id || decoded?.id || null
+  const emailFromToken = decoded?.user?.email || email || null
+
+  const userObj = { id, role: decodedRole, email: emailFromToken }
+      setUser(userObj)
       setIsAuthenticated(true)
-      localStorage.setItem("userData", JSON.stringify(userWithoutPassword))
 
       const redirectUrls = {
         student: "/student/dashboard",
         class_teacher: "/class-teacher/dashboard",
         subject_teacher: "/subject-teacher/dashboard",
         admin: "/admin/dashboard",
+        Student: "/student/dashboard",
+        Teacher: "/subject-teacher/dashboard",
+        Admin: "/admin/dashboard",
       }
 
       return {
         success: true,
-        redirectUrl: redirectUrls[userType] || "/dashboard",
-        user: userWithoutPassword,
+        redirectUrl: redirectUrls[role] || "/dashboard",
+        user: userObj,
       }
     } catch (error) {
       console.error("Login error:", error)
@@ -128,32 +124,20 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  const logout = async () => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 500))
-    } catch (error) {
-      console.error("Logout error:", error)
-    } finally {
-      setUser(null)
-      setIsAuthenticated(false)
-      localStorage.removeItem("userData")
-      window.location.href = "/"
-    }
+  const logout = () => {
+    localStorage.removeItem("token")
+    setUser(null)
+    setIsAuthenticated(false)
+    window.location.href = "/"
   }
 
-  const updateUser = (userData) => {
-    setUser(userData)
-    localStorage.setItem("userData", JSON.stringify(userData))
-  }
+  const updateUser = (userData) => setUser(userData)
 
-  const value = {
-    user,
-    isAuthenticated,
-    loading,
-    login,
-    logout,
-    updateUser,
-  }
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider
+      value={{ user, isAuthenticated, loading, login, logout, updateUser }}
+    >
+      {children}
+    </AuthContext.Provider>
+  )
 }

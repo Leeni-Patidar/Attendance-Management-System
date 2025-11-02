@@ -1,161 +1,147 @@
-
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-// @desc    Register a new user
-// @route   POST /api/auth/signup
-// @access  Public
-exports.signup = async (req, res, next) => {
-  try {
-    const { name, email, password, role } = req.body;
+// ---------------------
+// Helper: Generate JWT
+// ---------------------
+const generateToken = (user) => {
+  return jwt.sign(
+    { id: user._id, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: '7d' }
+  );
+};
 
-    // Check if user already exists
-    let user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).json({ message: 'User already exists' });
+// ---------------------
+// Signup
+// ---------------------
+exports.signup = async (req, res) => {
+  try {
+    let { name, email, password, role } = req.body;
+
+    // Normalize role values from frontend (e.g., 'student' -> 'Student')
+    if (role && typeof role === 'string') {
+      role = role.trim().toLowerCase()
+      if (role === 'student') role = 'Student'
+      else if (role === 'teacher' || role === 'subject_teacher' || role === 'class_teacher') role = 'Teacher'
+      else if (role === 'admin' || role === 'administrator') role = 'Admin'
     }
 
-    // Create a new user
-    user = new User({
+    // Prevent admin signup (if applicable)
+    if (role === 'Admin') {
+      return res.status(403).json({ message: 'Admin accounts cannot be created manually.' });
+    }
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) return res.status(400).json({ message: 'User already exists' });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({
       name,
       email,
-      password,
-      role,
+      password: hashedPassword,
+      role: role || 'Student'
     });
 
-    // Encrypt password
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
-
-    await user.save();
-
-    // Create token
-    // Sign token with top-level id and role so middleware can decode `decoded.id`
-    const payload = {
-      id: user.id,
-      role: user.role,
-    };
-
-    jwt.sign(
-      payload,
-      process.env.JWT_SECRET,
-      { expiresIn: '5d' },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token });
-      }
-    );
+    const token = generateToken(user);
+    res.status(201).json({ message: 'Signup successful', token, user });
   } catch (err) {
-    next(err);
+    res.status(500).json({ message: err.message });
   }
 };
 
-// @desc    Authenticate user & get token
-// @route   POST /api/auth/login
-// @access  Public
-exports.login = async (req, res, next) => {
+// ---------------------
+// Login
+// ---------------------
+exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, role: requestedRole } = req.body;
 
-    // Check for user
-    let user = await User.findOne({ email });
-    if (!user) {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: 'Invalid credentials' });
+
+    // Normalizer for role values
+    const normalize = (r) => {
+      if (!r) return null;
+      const s = String(r).toLowerCase();
+      if (s === 'student') return 'Student';
+      if (s === 'admin') return 'Admin';
+      if (s.includes('teacher')) return 'Teacher';
+      return null;
+    };
+
+    const normalizedRequested = normalize(requestedRole);
+    const normalizedStored = normalize(user.role);
+
+    // If a role was requested and it doesn't match the stored role, reject
+    if (normalizedRequested && normalizedStored && normalizedRequested !== normalizedStored) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    // Check password
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
+    if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
-    // Create token
-    const payload = {
-      user: {
-        id: user.id,
-        role: user.role,
-      },
-    };
-
-    jwt.sign(
-      payload,
-      process.env.JWT_SECRET,
-      { expiresIn: '5d' },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token });
-      }
-    );
+    const token = generateToken(user);
+    res.status(200).json({ message: 'Login successful', token, user });
   } catch (err) {
-    next(err);
+    res.status(500).json({ message: err.message });
   }
 };
 
-// @desc    Change password for authenticated user
-// @route   PUT /api/auth/change-password
-// @access  Private
-exports.changePassword = async (req, res, next) => {
+// ---------------------
+// Change Password (User)
+// ---------------------
+exports.changePassword = async (req, res) => {
   try {
-    const userId = req.user && (req.user.id || req.user.user && req.user.user.id);
-    const { currentPassword, newPassword } = req.body;
-
-    if (!userId) return res.status(401).json({ message: 'Unauthorized' });
-
-    const user = await User.findById(userId);
+    const user = await User.findById(req.user.id);
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    // Verify current password
-    const isMatch = await bcrypt.compare(currentPassword, user.password);
-    if (!isMatch) return res.status(400).json({ message: 'Current password is incorrect' });
+    const { oldPassword, newPassword } = req.body;
 
-    // Hash and set new password
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(newPassword, salt);
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) return res.status(400).json({ message: 'Old password is incorrect' });
+
+    user.password = await bcrypt.hash(newPassword, 10);
     await user.save();
 
-    res.json({ message: 'Password changed successfully' });
+    res.status(200).json({ message: 'Password changed successfully' });
   } catch (err) {
-    next(err);
+    res.status(500).json({ message: err.message });
   }
 };
 
-// @desc    Reset another user's password (Admin)
-// @route   PUT /api/auth/reset-password/:id
-// @access  Private/Admin
-exports.resetPassword = async (req, res, next) => {
+// ---------------------
+// Reset Password (Admin)
+// ---------------------
+exports.resetPassword = async (req, res) => {
   try {
     const { id } = req.params;
-    const { newPassword } = req.body;
+    const newPassword = '123456'; // default or random
 
-    const user = await User.findById(id);
+    const hashed = await bcrypt.hash(newPassword, 10);
+    const user = await User.findByIdAndUpdate(id, { password: hashed }, { new: true });
+
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(newPassword, salt);
-    await user.save();
-
-    res.json({ message: 'Password reset successfully' });
+    res.status(200).json({
+      message: 'Password reset successfully by Admin',
+      newPassword,
+      user
+    });
   } catch (err) {
-    next(err);
+    res.status(500).json({ message: err.message });
   }
 };
 
-// @desc    Delete authenticated user's account
-// @route   DELETE /api/auth/delete-account
-// @access  Private
-exports.deleteAccount = async (req, res, next) => {
+// ---------------------
+// Delete Account (User)
+// ---------------------
+exports.deleteAccount = async (req, res) => {
   try {
-    const userId = req.user && (req.user.id || req.user.user && req.user.user.id);
-    if (!userId) return res.status(401).json({ message: 'Unauthorized' });
-
-    const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ message: 'User not found' });
-
-    await user.remove();
-
-    res.json({ message: 'Account deleted' });
+    await User.findByIdAndDelete(req.user.id);
+    res.status(200).json({ message: 'Account deleted successfully' });
   } catch (err) {
-    next(err);
+    res.status(500).json({ message: err.message });
   }
 };

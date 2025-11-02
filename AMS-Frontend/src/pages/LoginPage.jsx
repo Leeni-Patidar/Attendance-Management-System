@@ -9,8 +9,8 @@ import { faGraduationCap } from "@fortawesome/free-solid-svg-icons"
 
 const LoginPage = () => {
   const { login, isAuthenticated, user } = useAuth()
-  const [userType, setUserType] = useState("")
-  const [credentials, setCredentials] = useState({ id: "", password: "" })
+  const [userType, setUserType] = useState("student")
+  const [credentials, setCredentials] = useState({ email: "", password: "" })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
@@ -28,8 +28,9 @@ const LoginPage = () => {
     setLoading(true)
     setError("")
 
+    // pass userType as 'role' to the auth endpoint through AuthContext.login
     const result = await login({
-      id: credentials.id,
+      email: credentials.email,
       password: credentials.password,
       userType: userType,
     })
@@ -43,17 +44,7 @@ const LoginPage = () => {
     setLoading(false)
   }
 
-  const fillDemoCredentials = (role) => {
-    const demoCredentials = {
-      student: { id: "student001", password: "demo123" },
-      class_teacher: { id: "classteach01", password: "demo123" },
-      subject_teacher: { id: "subjectteach01", password: "demo123" },
-      admin: { id: "admin01", password: "demo123" },
-    }
 
-    setUserType(role)
-    setCredentials(demoCredentials[role])
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
@@ -72,7 +63,7 @@ const LoginPage = () => {
         <form onSubmit={handleLogin} className="space-y-4">
           {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">{error}</div>}
 
-          <div>
+           <div>
             <label htmlFor="userType" className="block text-sm font-medium text-gray-700 mb-1">
               User Type
             </label>
@@ -88,18 +79,18 @@ const LoginPage = () => {
               <option value="subject_teacher">Subject Teacher</option>
               <option value="admin">Admin</option>
             </select>
-          </div>
+          </div> 
 
           <div>
-            <label htmlFor="id" className="block text-sm font-medium text-gray-700 mb-1">
-              ID
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              Email
             </label>
             <input
-              id="id"
-              type="text"
-              placeholder="Enter your ID"
-              value={credentials.id}
-              onChange={(e) => setCredentials({ ...credentials, id: e.target.value })}
+              id="email"
+              type="email"
+              placeholder="Enter your email"
+              value={credentials.email}
+              onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
@@ -123,44 +114,11 @@ const LoginPage = () => {
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-            disabled={!userType || !credentials.id || !credentials.password || loading}
+            disabled={!userType || !credentials.email || !credentials.password || loading}
           >
             {loading ? "Signing In..." : "Sign In"}
           </button>
-
-          <div className="mt-6 space-y-2">
-            <p className="text-center text-sm font-medium text-gray-700">Demo Credentials:</p>
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => fillDemoCredentials("student")}
-                className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded hover:bg-green-200"
-              >
-                Student Demo
-              </button>
-              <button
-                type="button"
-                onClick={() => fillDemoCredentials("class_teacher")}
-                className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200"
-              >
-                Class Teacher
-              </button>
-              <button
-                type="button"
-                onClick={() => fillDemoCredentials("subject_teacher")}
-                className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded hover:bg-purple-200"
-              >
-                Subject Teacher
-              </button>
-              <button
-                type="button"
-                onClick={() => fillDemoCredentials("admin")}
-                className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded hover:bg-red-200"
-              >
-                Admin Demo
-              </button>
-            </div>
-          </div>
+          
         </form>
       </div>
     </div>

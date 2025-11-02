@@ -17,6 +17,10 @@ const { errorHandler } = require('./middleware/errorHandler');
 
 const app = express();
 
+// Optional dev seeding (creates default users if collection is empty)
+const User = require('./models/User');
+const bcrypt = require('bcryptjs');
+
 // Middleware
 app.use(helmet());
 app.use(cors());
@@ -40,9 +44,27 @@ const PORT = process.env.PORT || 5000;
 
 async function start() {
   try {
-    const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/ams';
+    const mongoUri = process.env.MONGO_URI ;
     await mongoose.connect(mongoUri, { autoIndex: true });
     console.log('Connected to MongoDB');
+
+    // Seed default users for local dev if none exist
+    const userCount = await User.countDocuments();
+    if (userCount === 0) {
+      console.log('No users found in DB — creating default dev users...');
+      const hashed = await bcrypt.hash('Password123!', 10);
+      try {
+        await User.create([
+          { name: 'Admin User', email: 'admin@example.com', password: hashed, role: 'Admin' },
+          { name: 'Student User', email: 'student@example.com', password: hashed, role: 'Student' },
+          { name: 'Teacher User', email: 'teacher@example.com', password: hashed, role: 'Teacher' },
+        ]);
+        console.log('Default users created: admin@example.com / student@example.com / teacher@example.com (Password123!)');
+      } catch (seedErr) {
+        console.error('Failed to create default users:', seedErr.message || seedErr);
+      }
+    }
+
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   } catch (err) {
     console.error('Failed to start server', err);

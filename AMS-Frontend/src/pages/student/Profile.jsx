@@ -12,29 +12,50 @@ const StudentProfile = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Mock profile data
-    setTimeout(() => {
-      setProfileData({
-        name: user?.name || "John Doe",
-        rollNumber: user?.studentInfo?.rollNumber || "CS21B001",
-        email: "john.doe@college.edu",
-        phone: "+91 9876543210",
-        program: user?.studentInfo?.program || "B.Tech Computer Science",
-        year: user?.studentInfo?.year || "3rd Year",
-        semester: user?.studentInfo?.semester || "6th Semester",
-        branch: user?.studentInfo?.branch || "Computer Science & Engineering",
-        class: user?.studentInfo?.class || "CS 3rd Year - Section A",
-        address: "123 Main Street, City, State - 123456",
-        dateOfBirth: "2002-05-15",
-        bloodGroup: "O+",
-        fatherName: "Robert Doe",
-        motherName: "Mary Doe",
-        guardianPhone: "+91 9876543211",
-        admissionDate: "2021-08-15",
-        studentId: "STU2021001",
-      })
-      setLoading(false)
-    }, 1000)
+    // fetch current student's profile from backend
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem('token')
+        const res = await fetch('/api/students/me', {
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        })
+        if (!res.ok) {
+          console.error('Failed to load profile', res.status)
+          setLoading(false)
+          return
+        }
+        const data = await res.json()
+        // Map backend fields to profileData expected by UI
+        setProfileData({
+          name: data.name || user?.name || '',
+          rollNumber: data.rollNo || data.studentID || '',
+          email: data.email || '',
+          phone: data.phoneNumber || '',
+          program: data.program || '',
+          year: data.year ? String(data.year) : '',
+          semester: data.sem ? String(data.sem) : '',
+          branch: data.branch || '',
+          class: data.class || '',
+          address: data.address || '',
+          dateOfBirth: data.dob ? new Date(data.dob).toISOString().slice(0, 10) : '',
+          bloodGroup: data.bloodGroup || '',
+          fatherName: data.fatherName || '',
+          motherName: data.motherName || '',
+          guardianPhone: data.guardianPhoneNumber || '',
+          admissionDate: data.admissionDate || '',
+          studentId: data.studentID || data._id || '',
+        })
+      } catch (err) {
+        console.error('Error fetching profile:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchProfile()
   }, [user])
 
 

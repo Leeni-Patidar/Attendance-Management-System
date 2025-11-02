@@ -1,23 +1,44 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+// ---------------------
+// Protect Middleware
+// ---------------------
 exports.protect = async (req, res, next) => {
+  let token;
+
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    token = req.headers.authorization.split(' ')[1];
+  }
+
+  if (!token)
+    return res.status(401).json({ message: 'Not authorized, no token provided' });
+
   try {
-    let token;
-    const auth = req.headers.authorization;
-    if (auth && auth.startsWith('Bearer ')) token = auth.split(' ')[1];
-    if (!token) return res.status(401).json({ message: 'Not authorized' });
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.id).select('-password');
-    if (!user) return res.status(401).json({ message: 'Not authorized' });
-    req.user = { id: user._id, role: user.role, name: user.name, email: user.email };
+    req.user = await User.findById(decoded.id).select('-password');
+    if (!req.user)
+      return res.status(404).json({ message: 'User not found' });
+
     next();
   } catch (err) {
-    next(err);
+    res.status(401).json({ message: 'Token failed or expired' });
   }
 };
 
-exports.authorize = (...roles) => (req, res, next) => {
-  if (!roles.includes(req.user.role)) return res.status(403).json({ message: 'Forbidden' });
-  next();
+// ---------------------
+// Role-Based Authorization
+// ---------------------
+exports.authorize = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res
+        .status(403)
+        .json({ message: `Role '${req.user.role}' is not authorized to access this route` });
+    }
+    next();
+  };
 };
